@@ -1,5 +1,7 @@
 #include <string.h>
 
+//	http://www.electronics.dit.ie/staff/tscarff/8086_instruction_set/8086_instruction_set.html
+
 
 class Processor_8086{
 public:
@@ -32,29 +34,67 @@ public:
 	void AAM();
 	void AAS();
 	
-	void ADC();
-	void ADD();
-	void AND();
+	void ADC(char* arg1, char* arg2){
+		if(getValue(arg1) + getValue(arg2)/TOP_BOUNDARY > 0)
+			STC();
+		ADD(arg1, arg2);
+	}
+	void ADD(char* arg1, char* arg2){
+		setValue(arg1, getValue(arg1) + getValue(arg2));
+	}
+	void AND(char* arg1, char* arg2){
+		setValue(arg1, getValue(arg1) & getValue(arg2));
+	}
 	void CALL();
 	void CBW();
-	void CLC();
-	void CLD();
-	void CLI();
-	void CMC();
-	void CMP();
+	void CLC(){
+		flags = (flags & ~CARRY_FLAG);
+	}
+	void CLD(){
+		flags = (flags & ~DIRECTION_FLAG);
+	}
+	void CLI(){
+		flags = (flags & ~INTERRUPT_FLAG);
+	}
+	void CMC(){
+		if(flags & CARRY_FLAG)
+			CLC();
+		else
+			STC();
+	}
+	void CMP(char* arg1, char* arg2){
+		int result = getValue(arg1) - getValue(arg2);
+		
+		if(result == 0)
+			flags = flags | ZERO_FLAG;
+		//else if(result > 0) TODO
+			
+	}
 	void CMPSB();
 	void CMPSW();
 	void CWD();
 	void DAA();
 	void DAS();
 	void DEC();
-	void DIV();
+	void DIV(char* arg){
+		if(isByteRegistry(arg)){
+			int ax = getValue("AX");
+			setValue("AL", ax / getValue(arg));
+			setValue("AH", ax % getValue(arg));
+		} else if(isWordRegistry(arg)){
+			int dx_ax = getValue("DX")*TOP_BOUNDARY + getValue("AX");
+			setValue("AX", dx_ax / getValue(arg));
+			setValue("DX", dx_ax % getValue(arg));
+		} //else TODO
+	}
 	void ESC();
 	void HLT();
 	void IDIV();
 	void IMUL();
 	void IN();
-	void INC();
+	void INC(char* arg){
+		setValue(getValue(arg)+1);
+	}
 	void INT();
 	void INTO();
 	void IRET();
@@ -101,9 +141,15 @@ public:
 	void SCASW();
 	void SHL();
 	void SHR();
-	void STC();
-	void STD();
-	void STI();
+	void STC(){
+		flags = flags | CARRY_FLAG;
+	}
+	void STD(){
+		flags = flags | DIRECTION_FLAG;
+	}
+	void STI(){
+		flags = flags | INTERRUPT_FLAG;
+	}
 	void STOSB();
 	void STOSW();
 	void SUB();
@@ -115,7 +161,17 @@ public:
 	
 private:
 	
-	const static int TOP_BOUNDARY = 65536; 
+	const static int TOP_BOUNDARY = 65536;
+	
+	const static int CARRY_FLAG 	= 1;
+	const static int PARITY_FLAG 	= 1<<2;
+	const static int AUX_CARRY_FLAG = 1<<4;
+	const static int ZERO_FLAG 		= 1<<6;
+	const static int SIGN_FLAG 		= 1<<7;
+	const static int TRAP_FLAG 		= 1<<8;
+	const static int INTERRUPT_FLAG = 1<<9;
+	const static int DIRECTION_FLAG = 1<<10;
+	const static int OVERFLOW_FLAG 	= 1<<11;
 	
 	// AX, BX, CX, DX
 	int AX, BX, CX, DX;
@@ -176,6 +232,40 @@ private:
 			CX = value % TOP_BOUNDARY;
 		else if(strcmp(arg, "DX") == 0)
 			DX = value % TOP_BOUNDARY;
+	}
+	
+	bool isByteRegistry(char* arg){
+		if(strcmp(arg, "AL") == 0)
+			return 1;
+		else if(strcmp(arg, "BL") == 0)
+			return 1;
+		else if(strcmp(arg, "CL") == 0)
+			return 1;
+		else if(strcmp(arg, "DL") == 0)
+			return 1;
+		else if(strcmp(arg, "AH") == 0)
+			return 1;
+		else if(strcmp(arg, "BH") == 0)
+			return 1;
+		else if(strcmp(arg, "CH") == 0)
+			return 1;
+		else if(strcmp(arg, "DH") == 0)
+			return 1;
+		else
+			return 0;
+	}
+	
+	bool isWordRegistry(char* arg){
+		if(strcmp(arg, "AX") == 0)
+			return 1;
+		else if(strcmp(arg, "BX") == 0)
+			return 1;
+		else if(strcmp(arg, "CX") == 0)
+			return 1;
+		else if(strcmp(arg, "DX") == 0)
+			return 1;
+		else
+			return 0;
 	}
 };
  
