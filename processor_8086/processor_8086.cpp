@@ -93,7 +93,7 @@ public:
 	void IMUL();
 	void IN();
 	void INC(char* arg){
-		setValue(getValue(arg)+1);
+		setValue(arg, getValue(arg)+1);
 	}
 	void INT();
 	void INTO();
@@ -161,7 +161,8 @@ public:
 	
 private:
 	
-	const static int TOP_BOUNDARY = 65536;
+	const static int TOP_BOUNDARY = 1<<16;//65536;
+	const static int BYTE_BOUNDARY = 1<<8;
 	
 	const static int CARRY_FLAG 	= 1;
 	const static int PARITY_FLAG 	= 1<<2;
@@ -192,7 +193,7 @@ private:
 	
 	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
 	
-	int getValue(char* arg){
+	int getValue(const char* arg){
 		if(strcmp(arg, "AX") == 0)
 			return AX;
 		else if(strcmp(arg, "BX") == 0)
@@ -219,11 +220,11 @@ private:
 			return AX;
 		else if(strcmp(arg, "AX") == 0)
 			return AX;*/
-		else return 0;// w takim wypadku musisz policzyć wartosć wyrażenia
+		else return 0;// w takim wypadku musisz policzyć wartosć wyrażenia TODO
 			
 	}
 	
-	void setValue(char* arg, int value){
+	void setValue(const char* arg, int value){
 		if(strcmp(arg, "AX") == 0)
 			AX = value % TOP_BOUNDARY;
 		else if(strcmp(arg, "BX") == 0)
@@ -232,6 +233,22 @@ private:
 			CX = value % TOP_BOUNDARY;
 		else if(strcmp(arg, "DX") == 0)
 			DX = value % TOP_BOUNDARY;
+		else if(strcmp(arg, "AL") == 0)
+			AX = (AX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+		else if(strcmp(arg, "BL") == 0)
+			BX = (BX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+		else if(strcmp(arg, "CL") == 0)
+			CX = (CX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+		else if(strcmp(arg, "DL") == 0)
+			DX = (DX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+		else if(strcmp(arg, "AH") == 0)
+			AX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + AX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "BH") == 0)
+			BX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + BX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "CH") == 0)
+			CX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + CX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "DH") == 0)
+			DX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + DX % BYTE_BOUNDARY;
 	}
 	
 	bool isByteRegistry(char* arg){
