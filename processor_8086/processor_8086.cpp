@@ -202,24 +202,24 @@ private:
 			return CX;
 		else if(strcmp(arg, "DX") == 0)
 			return DX;
-		/*else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;
-		else if(strcmp(arg, "AX") == 0)
-			return AX;*/
+		else if(strcmp(arg, "AL") == 0)
+			return AX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "BL") == 0)
+			return BX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "CL") == 0)
+			return CX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "DL") == 0)
+			return DX % BYTE_BOUNDARY;
+		else if(strcmp(arg, "AH") == 0)
+			return AX / BYTE_BOUNDARY;
+		else if(strcmp(arg, "BH") == 0)
+			return BX / BYTE_BOUNDARY;
+		else if(strcmp(arg, "CH") == 0)
+			return CX / BYTE_BOUNDARY;
+		else if(strcmp(arg, "DH") == 0)
+			return DX / BYTE_BOUNDARY;
+		//else if(strcmp(arg, "AX") == 0)
+		//	return AX;
 		else return 0;// w takim wypadku musisz policzyć wartosć wyrażenia TODO
 			
 	}
