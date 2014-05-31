@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "Instruction.hpp"
+#include <string.h>
+#include "../headers/Instruction.hpp"
 
 char* Instruction::getName(){
 	return name;
@@ -19,8 +20,18 @@ int Instruction::getAddress(){
 }
 
 Instruction::Instruction(char* name, int address, int numberOfArgs, char** args){
-	this->name = name;
+	this->name = strdup(name);
 	this->address = address;
 	this->argsNo = numberOfArgs;
-	this->args = args;
+	this->args = (char**)malloc(numberOfArgs*sizeof(char*));
+	int i;
+	for(i = 0; i < numberOfArgs; ++i)
+		this->args[i] = strdup(args[i]);
+}
+
+Instruction::~Instruction(){
+	free(name);
+	int i;
+	for(i = 0; i < argsNo; ++i)
+		free(args[i]);
 }

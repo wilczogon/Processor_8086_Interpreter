@@ -13,7 +13,7 @@ test_asm_interpreter.o:
 	g++ -c test_asm_interpreter.cpp -o test_asm_interpreter.o
 
 Instruction.o:
-	g++ -c Instruction/Instruction.cpp -o Instruction.o
+	g++ -c classes/Instruction.cpp -o Instruction.o
 	
 	
 clean:
