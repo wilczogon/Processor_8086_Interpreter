@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "headers/Instruction.hpp"
+#include "headers/Message.hpp"
+#include "headers/Logger.hpp"
 //#include <>
 
 int main(int argNo, char** args){
@@ -29,6 +31,48 @@ int main(int argNo, char** args){
 		printf("\tError: getArgument() [2]\n");
 	
 	delete instruction;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	printf("Test of Message\n");
+	char* messageText = (char*)"Error occured";
+	Message* message = new Message(messageText, ERROR);
+	
+	if(strcmp(message->getText(), messageText) != 0)
+		printf("\tError: getText()\n");
+	
+	if(message->getType() != ERROR)
+		printf("\tError: getType()\n");
+	
+	delete message;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	printf("Test of Logger\n");
+	
+	Logger* logger = new Logger((char*)"testLog");
+	
+	logger->log(new Message((char*)"Initiated", NOTIFICATION));
+	logger->log(new Message((char*)"Warning", WARNING));
+	logger->log(new Message((char*)"Error occured", ERROR));
+	
+	if(logger->getNumberOfMessages() != 3)
+		printf("\tError: getNumberOfMessages() [1]\n");
+	
+	Message** messages = logger->getListOfMessages();
+	
+	if(strcmp(messages[2]->getText(), "Error occured") != 0)
+		printf("\tError: getListOfMessages() [1]\n");
+	
+	if(messages[2]->getType() != ERROR)
+		printf("\tError: getListOfMessages() [2]\n");
+	
+	logger->flush();
+	
+	if(logger->getNumberOfMessages() != 0)
+		printf("\tError: getNumberOfMessages() [2]\n");
+	
+	delete logger;
 	
 	return 0;
 }
