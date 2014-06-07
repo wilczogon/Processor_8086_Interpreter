@@ -6,8 +6,8 @@ ready:
 	g++ -I./Processor_8086/ asm_interpreter.cpp Processor_8086/Processor_8086.cpp -o asm_interpreter
 
 
-test: test_asm_interpreter.o Instruction.o Message.o Logger.o Stack.o
-	g++ Instruction.o Message.o Logger.o Stack.o test_asm_interpreter.o -o test_asm_interpreter
+test: test_asm_interpreter.o Instruction.o Message.o Logger.o Stack.o Processor_8086.o
+	g++ Instruction.o Message.o Logger.o Stack.o Processor_8086.o test_asm_interpreter.o -o test_asm_interpreter
 
 test_asm_interpreter.o:
 	g++ -c test_asm_interpreter.cpp -o test_asm_interpreter.o
@@ -24,5 +24,8 @@ Logger.o:
 Stack.o:
 	g++ -c classes/Stack.cpp -o Stack.o
 	
+Processor_8086.o:
+	g++ -c classes/Processor_8086.cpp -o Processor_8086.o
+	
 clean:
-	rm test/* & rm Instruction.o & rm test_asm_interpreter.o & rm Message.o & rm Logger.o & rm Stack.o
+	rm test/* & rm Instruction.o & rm test_asm_interpreter.o & rm Message.o & rm Logger.o & rm Stack.o & rm Processor_8086.o

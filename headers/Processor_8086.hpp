@@ -1,7 +1,19 @@
+#ifndef PROCESSOR_8086
+#define PROCESSOR_8086
+
+#include "Stack.hpp"
+#include "Memory.hpp"
+#include "Logger.hpp"
+
 class Processor_8086{
 public:
 	
 	//Processor_8086();
+	
+	Processor_8086(Memory* memory, int offset, Logger* logger);
+	~Processor_8086();
+	
+	int nextStep();
 	
 	// lista instrukcji
 	void AAA();
@@ -41,7 +53,6 @@ public:
 	void JB(char* arg);
 	void JBE(char* arg);
 	void JC(char* arg);
-	void JA(char* arg);
 	void JE(char* arg);
 	void JG(char* arg);
 	void JGE(char* arg);
@@ -68,7 +79,6 @@ public:
 	void LOOPE(char* arg);
 	void LOOPNE(char* arg);
 	void LOOPNZ(char* arg);
-	void LOOPNE(char* arg);
 	void LOOPZ(char* arg);
 	void MOV(char* arg1, char* arg2);
 	void MOVSB();
@@ -127,5 +137,57 @@ public:
 	void XLAT();	// TODO
 	void XOR(char* arg1, char* arg2);
 	
+private:
+	
+	const static int WORD_BOUNDARY = 1<<16;
+	const static int BYTE_BOUNDARY = 1<<8;
+	
+	const static int CARRY_FLAG 	= 1;
+	const static int PARITY_FLAG 	= 1<<2;
+	const static int AUX_CARRY_FLAG = 1<<4;
+	const static int ZERO_FLAG 		= 1<<6;
+	const static int SIGN_FLAG 		= 1<<7;
+	const static int TRAP_FLAG 		= 1<<8;
+	const static int INTERRUPT_FLAG = 1<<9;
+	const static int DIRECTION_FLAG = 1<<10;
+	const static int OVERFLOW_FLAG 	= 1<<11;
+	
+	// AX, BX, CX, DX
+	char AH, AL, BH, BL, CH, CL, DH, DL;
+	
+	// SI, DI, BP, SP - 16 bit
+	int SI;
+	int DI;
+	int BP;
+	int SP;
+	
+	// CS, DS, ES, SS - 16 bit
+	int CS;
+	int DS;
+	int ES;
+	int SS;
+	
+	int flags;
+	int IP;
+	
+	Stack* stack;
+	Memory* memory;
+	Logger* logger;
+	
+	// lista etykiet
+	
+	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
+	
+	int getValue(const char* arg);
+	void setValue(const char* arg, int value);
+	
+	bool isByteRegistry(char* arg);
+	bool isWordRegistry(char* arg);
+	bool isValue(char* arg);
+	bool isMemoryAddress(char* arg);
+	bool isLabel(char* arg);
+	
 	
 };
+
+#endif
