@@ -5,15 +5,26 @@
 #include "headers/Message.hpp"
 #include "headers/Logger.hpp"
 #include "headers/Stack.hpp"
+#include "headers/Operand.hpp"
 //#include <>
 
 int main(int argNo, char** args){
 	
+	printf("Test of Operand\n");
+	char* expression = (char*)"example";
+	Operand* operand = new Operand(expression);
+	
+	if(strcmp(operand->getExpression(), expression) != 0)
+		printf("\tError: getExpression()\n");
+	
+	delete operand;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	printf("Test of Instruction\n");
-	char** arguments = (char**)malloc(2*sizeof(char*));
-	arguments[0] = (char*)"AX";
-	arguments[1] = (char*)"BX";
+	Operand** arguments = (Operand**)malloc(2*sizeof(Operand*));
+	arguments[0] = new Operand((char*)"AX");
+	arguments[1] = new Operand((char*)"BX");
 	Instruction* instruction = new Instruction((char*)"MOV", 20, 2, arguments);
 	
 	if(strcmp(instruction->getName(), "MOV") != 0)
@@ -25,10 +36,10 @@ int main(int argNo, char** args){
 	if(instruction->getNumberOfArguments() != 2)
 		printf("\tError: getNumberOfArguments()\n");
 	
-	if(strcmp(instruction->getArgument(0), "AX") != 0)
+	if(strcmp(instruction->getArgument(0)->getExpression(), "AX") != 0)
 		printf("\tError: getArgument() [1]\n");
 	
-	if(strcmp(instruction->getArgument(1), "BX") != 0)
+	if(strcmp(instruction->getArgument(1)->getExpression(), "BX") != 0)
 		printf("\tError: getArgument() [2]\n");
 	
 	delete instruction;

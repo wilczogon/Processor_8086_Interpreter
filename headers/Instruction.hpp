@@ -1,19 +1,20 @@
 #ifndef INSTRUCTION
 #define INSTRUCTION
+#include "Operand.hpp"
 
 class Instruction{
 public:
 	char* getName();
 	int getNumberOfArguments();
-	char* getArgument(int no);
+	Operand* getArgument(int no);
 	int getAddress();
-	Instruction(char* name, int address, int numberOfArgs, char** args);
+	Instruction(char* name, int address, int numberOfArgs, Operand** args);
 	~Instruction();
 
 private:
 	char* name;
 	int argsNo;
-	char** args;
+	Operand** args;
 	int address;
 };
 

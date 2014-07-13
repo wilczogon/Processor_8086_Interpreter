@@ -11,7 +11,7 @@ int Instruction::getNumberOfArguments(){
 	return argsNo;
 }
 	
-char* Instruction::getArgument(int no){
+Operand* Instruction::getArgument(int no){
 	return args[no];
 }
 	
@@ -19,19 +19,16 @@ int Instruction::getAddress(){
 	return address;
 }
 
-Instruction::Instruction(char* name, int address, int numberOfArgs, char** args){
+Instruction::Instruction(char* name, int address, int numberOfArgs, Operand** args){
 	this->name = strdup(name);
 	this->address = address;
 	this->argsNo = numberOfArgs;
-	this->args = (char**)malloc(numberOfArgs*sizeof(char*));
-	int i;
-	for(i = 0; i < numberOfArgs; ++i)
-		this->args[i] = strdup(args[i]);
+	this->args = args;
 }
 
 Instruction::~Instruction(){
 	free(name);
 	int i;
 	for(i = 0; i < argsNo; ++i)
-		free(args[i]);
+		delete(args[i]);
 }
