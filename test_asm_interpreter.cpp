@@ -6,6 +6,8 @@
 #include "headers/Logger.hpp"
 #include "headers/Stack.hpp"
 #include "headers/Operand.hpp"
+#include "headers/NumericValue.hpp"
+#include "headers/MemoryAddress.hpp"
 //#include <>
 
 int main(int argNo, char** args){
@@ -18,6 +20,34 @@ int main(int argNo, char** args){
 		printf("\tError: getExpression()\n");
 	
 	delete operand;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	printf("Test of NumericValue\n");
+	expression = (char*)"18+2";
+	NumericValue* numericValue = new NumericValue(expression, 20);
+	
+	if(numericValue->getValue() != 20)
+		printf("\tError: getValue()\n");
+	
+	if(strcmp(numericValue->getExpression(), expression) != 0)
+		printf("\tError: getExpression()\n");
+	
+	delete numericValue;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	printf("Test of MemoryAddress\n");
+	expression = (char*)"18+2";
+	MemoryAddress* memoryAddress = new MemoryAddress(expression, 20);
+	
+	if(memoryAddress->getValue() != 20)
+		printf("\tError: getValue()\n");
+	
+	if(strcmp(memoryAddress->getExpression(), expression) != 0)
+		printf("\tError: getExpression()\n");
+	
+	delete memoryAddress;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

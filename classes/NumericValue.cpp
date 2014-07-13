@@ -1,19 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../headers/Operand.hpp"
 #include "../headers/NumericValue.hpp"
 
-NumericValue::NumericValue(char* expression, int value){
-	this->expression = strdup(expression);
+NumericValue::NumericValue(char* expression, int value): Operand(expression){
 	this->value = value;
-}
-
-NumericValue::~NumericValue(){
-	free(expression);
-}
-	
-char* NumericValue::getExpression(){
-	return expression;
 }
 
 int NumericValue::getValue(){

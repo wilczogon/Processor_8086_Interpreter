@@ -1,16 +1,12 @@
 #ifndef MEMORY_ADDRESS
 #define MEMORY_ADDRESS
 
-class MemoryAddress{
+class MemoryAddress: public Operand{
 public:
-	MemoryAddress();
-	~MemoryAddress();
-	
-	char* getExpression();
+	MemoryAddress(char* expression, int value);
 	int getValue();
 	
 private:
-	char* expression;
 	int value;
 };
 

@@ -1,22 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../headers/Operand.hpp"
 #include "../headers/MemoryAddress.hpp"
 
-MemoryAddress::MemoryAddress(char* expression, int value){
-	this->expression = strdup(expression);
+MemoryAddress::MemoryAddress(char* expression, int value): Operand(expression){
 	this->value = value;
-}
-
-MemoryAddress::~MemoryAddress(){
-	free(expression);
-}
-	
-char* MemoryAddress::getExpression(){
-	return expression;
 }
 
 int MemoryAddress::getValue(){
 	return value;
 }
- 

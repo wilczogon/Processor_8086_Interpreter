@@ -1,16 +1,12 @@
 #ifndef NUMERIC_VALUE
 #define NUMERIC_VALUE
 
-class NumericValue{
+class NumericValue: public Operand{
 public:
 	NumericValue(char* expression, int value);
-	~NumericValue();
-	
-	char* getExpression();
 	int getValue();
 	
 private:
-	char* expression;
 	int value;
 };
 
