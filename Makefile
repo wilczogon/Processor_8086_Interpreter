@@ -6,8 +6,8 @@ ready:
 	g++ -I./Processor_8086/ asm_interpreter.cpp Processor_8086/Processor_8086.cpp -o asm_interpreter
 
 
-test: test_asm_interpreter.o Instruction.o Message.o Logger.o Stack.o NumericValue.o MemoryAddress.o Operand.o Processor_8086.o
-	g++ Instruction.o Message.o Logger.o Stack.o Operand.o NumericValue.o MemoryAddress.o Processor_8086.o test_asm_interpreter.o -o test_asm_interpreter
+test: test_asm_interpreter.o Instruction.o Message.o Logger.o Stack.o NumericValue.o MemoryAddress.o Registry.o Operand.o Processor_8086.o
+	g++ Instruction.o Message.o Logger.o Stack.o Operand.o NumericValue.o MemoryAddress.o Registry.o Processor_8086.o test_asm_interpreter.o -o test_asm_interpreter
 
 test_asm_interpreter.o:
 	g++ -c test_asm_interpreter.cpp -o test_asm_interpreter.o
@@ -33,8 +33,11 @@ NumericValue.o:
 MemoryAddress.o:
 	g++ -c classes/MemoryAddress.cpp -o MemoryAddress.o
 	
+Registry.o:
+	g++ -c classes/Registry.cpp -o Registry.o
+
 Processor_8086.o:
 	g++ -c classes/Processor_8086.cpp -o Processor_8086.o
 	
 clean:
-	rm test/* & rm Instruction.o & rm test_asm_interpreter.o & rm Message.o & rm Logger.o & rm Stack.o & rm Operand.o & rm NumericValue.o & rm MemoryAddress.o & rm Processor_8086.o
+	rm test/* & rm Instruction.o & rm test_asm_interpreter.o & rm Message.o & rm Logger.o & rm Stack.o & rm Operand.o & rm NumericValue.o & rm MemoryAddress.o & rm Registry.o & rm Processor_8086.o

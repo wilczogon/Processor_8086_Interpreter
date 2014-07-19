@@ -8,6 +8,7 @@
 #include "headers/Operand.hpp"
 #include "headers/NumericValue.hpp"
 #include "headers/MemoryAddress.hpp"
+#include "headers/Registry.hpp"
 //#include <>
 
 int main(int argNo, char** args){
@@ -51,6 +52,17 @@ int main(int argNo, char** args){
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	printf("Test of Registry\n");
+	expression = (char*)"AX";
+	Registry* registry = new Registry(expression);
+
+	if(strcmp(registry->getExpression(), expression) != 0)
+		printf("\tError: getExpression()\n");
+
+	delete registry;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	printf("Test of Instruction\n");
 	Operand** arguments = (Operand**)malloc(2*sizeof(Operand*));
 	arguments[0] = new Operand((char*)"AX");
