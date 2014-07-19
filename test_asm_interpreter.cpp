@@ -65,8 +65,8 @@ int main(int argNo, char** args){
 
 	printf("Test of Instruction\n");
 	Operand** arguments = (Operand**)malloc(2*sizeof(Operand*));
-	arguments[0] = new Operand((char*)"AX");
-	arguments[1] = new Operand((char*)"BX");
+	arguments[0] = new Registry((char*)"AX");
+	arguments[1] = new NumericValue((char*)"2+2", 4);
 	Instruction* instruction = new Instruction((char*)"MOV", 20, 2, arguments);
 	
 	if(strcmp(instruction->getName(), "MOV") != 0)
@@ -81,7 +81,7 @@ int main(int argNo, char** args){
 	if(strcmp(instruction->getArgument(0)->getExpression(), "AX") != 0)
 		printf("\tError: getArgument() [1]\n");
 	
-	if(strcmp(instruction->getArgument(1)->getExpression(), "BX") != 0)
+	if(strcmp(instruction->getArgument(1)->getExpression(), "2+2") != 0)
 		printf("\tError: getArgument() [2]\n");
 	
 	delete instruction;
