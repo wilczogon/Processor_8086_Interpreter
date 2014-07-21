@@ -7,8 +7,9 @@
 Instruction** InstructionReader::getListOfInstructions(){
 	//mock function
 	Instruction** instructions = (Instruction**)malloc(2*sizeof(Instruction*));
-	instructions[0] = new Instruction((char*)"MOV", 10, 0, null);
-	instructions[1] = new Instruction((char*)"MOV2", 11, 0, null);
+	instructions[0] = new Instruction((char*)"MOV", 10, 0, NULL);
+	instructions[1] = new Instruction((char*)"MOV2", 11, 0, NULL);
+	return instructions;
 }
 
 int InstructionReader::getNumberOfInstructions(){
@@ -17,7 +18,7 @@ int InstructionReader::getNumberOfInstructions(){
 }
 
 InstructionReader::InstructionReader(char* fileName, Logger* logger){
-	this->logger = logger
+	InstructionReader::logger = logger;
 	//tu przetwarzaj sobie jakoś fileName
 }
 

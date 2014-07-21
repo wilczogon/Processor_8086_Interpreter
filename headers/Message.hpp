@@ -1,9 +1,11 @@
 #ifndef MESSAGE
 #define MESSAGE
 
-const int NOTIFICATION = 0;
-const int WARNING = 1;
-const int ERROR = 2;
+enum MessageType{
+	NOTIFICATION = 0,
+	WARNING,
+	ERROR
+};
 
 class Message{
 public:

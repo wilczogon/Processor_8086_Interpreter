@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Memory::Memory(int memorySize) {
+Memory::Memory(int memorySize, Logger* logger) {
+	Memory::logger = logger;
 	Memory::memorySize = memorySize;
-	memoryCells = calloc(memorySize,sizeof(char));
-	instructionMarkers = calloc(memorySize,sizeof(bool));
-	stackMarkers = calloc(memorySize,sizeof(bool));
+	memoryCells = (char*) calloc(memorySize,sizeof(char));
+	instructionMarkers = (bool*) calloc(memorySize,sizeof(bool));
+	stackMarkers = (bool*) calloc(memorySize,sizeof(bool));
 
 }
 

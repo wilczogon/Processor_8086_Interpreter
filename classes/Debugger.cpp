@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../headers/Debugger.hpp"
-#include "../headers/InstructionReader.hpp"
-#include "../headers/Memory.hpp"
 
 //void Debbuger::step();
 //void Debugger::run();

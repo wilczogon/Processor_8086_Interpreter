@@ -1,52 +1,23 @@
+Components = Instruction.x Message.x Logger.x Stack.x NumericValue.x MemoryAddress.x Registry.x Operand.x Processor_8086.x Debugger.x Memory.x InstructionReader.x
+CXX = g++
+CXXFLAGS = 
+ComponentsFolder = classes/
 
 all: test
 
 
 ready:
-	g++ -I./Processor_8086/ asm_interpreter.cpp Processor_8086/Processor_8086.cpp -o asm_interpreter
+	$(CXX) -I./Processor_8086/ asm_interpreter.cpp Processor_8086/Processor_8086.cpp -o asm_interpreter
 
+test: $(Components:.x=.o) test_asm_interpreter.o
+	$(CXX) $(Components:.x=.o) test_asm_interpreter.o -o test_asm_interpreter
 
-test: test_asm_interpreter.o Instruction.o Message.o Logger.o Stack.o NumericValue.o MemoryAddress.o Registry.o Operand.o Processor_8086.o Debugger.o Memory.o InstructionReader.o
-	g++ Instruction.o Message.o Logger.o Stack.o Operand.o NumericValue.o MemoryAddress.o Registry.o Processor_8086.o Debugger.o test_asm_interpreter.o -o test_asm_interpreter
+$(Components:.x=.o) :
+	$(CXX) -c $(CXXFLAGS) $(ComponentsFolder)$(@:.o=.cpp) -o $@
 
 test_asm_interpreter.o:
-	g++ -c test_asm_interpreter.cpp -o test_asm_interpreter.o
-
-Instruction.o:
-	g++ -c classes/Instruction.cpp -o Instruction.o
-	
-Message.o:
-	g++ -c classes/Message.cpp -o Message.o
-	
-Logger.o:
-	g++ -c classes/Logger.cpp -o Logger.o
-	
-Stack.o:
-	g++ -c classes/Stack.cpp -o Stack.o
-	
-Operand.o:
-	g++ -c classes/Operand.cpp -o Operand.o
-	
-NumericValue.o:
-	g++ -c classes/NumericValue.cpp -o NumericValue.o
-	
-MemoryAddress.o:
-	g++ -c classes/MemoryAddress.cpp -o MemoryAddress.o
-	
-Registry.o:
-	g++ -c classes/Registry.cpp -o Registry.o
-
-Processor_8086.o:
-	g++ -c classes/Processor_8086.cpp -o Processor_8086.o
-	
-Debugger.o:
-	g++ -c classes/Debugger.cpp  -o Debugger.o
-
-Memory.o:
-	g++ -c classes/Memory.cpp -o Memory.o
-
-InstructionReader.o:
-	g++ -c classes/InstructionReader.cpp -o InstructionReader.o
+	$(CXX) -c $(CXXFLAGS) test_asm_interpreter.cpp -o test_asm_interpreter.o
 
 clean:
-	rm test/* & rm Instruction.o & rm test_asm_interpreter.o & rm Message.o & rm Logger.o & rm Stack.o & rm Operand.o & rm NumericValue.o & rm MemoryAddress.o & rm Registry.o & rm Processor_8086.o & rm Debbuger.o & rm Memory.o & rm InstructionReader.o
+	rm -f test/
+	rm *.o

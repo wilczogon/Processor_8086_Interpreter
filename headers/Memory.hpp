@@ -1,6 +1,6 @@
 
-#ifndef MEMORY_HPP_
-#define MEMORY_HPP_
+#ifndef MEMORY
+#define MEMORY
 
 #include "Logger.hpp"
 
@@ -19,6 +19,7 @@ private:
 	bool* instructionMarkers;
 	bool* stackMarkers;
 	int memorySize;
+	Logger* logger;
 };
 
-#endif /* MEMORY_HPP_ */
+#endif

@@ -1,6 +1,7 @@
 #ifndef INSTRUCTION_READER
 #define ISTRUCTION_READER
 #include "Instruction.hpp"
+#include "Logger.hpp"
 
 class InstructionReader{
 public:

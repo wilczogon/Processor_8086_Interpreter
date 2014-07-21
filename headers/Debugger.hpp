@@ -3,6 +3,8 @@
 #include "Instruction.hpp"
 #include "Processor_8086.hpp"
 #include "Logger.hpp"
+#include "InstructionReader.hpp"
+#include "Memory.hpp"
 
 class Debugger{
 public:
