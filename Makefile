@@ -1,4 +1,5 @@
-Components = Instruction.x Message.x Logger.x Stack.x NumericValue.x MemoryAddress.x Registry.x Operand.x Processor_8086.x Debugger.x Memory.x InstructionReader.x
+Components = Instruction.x Message.x Logger.x Stack.x NumericValue.x MemoryAddress.x Registry.x Operand.x Processor_8086.x Debugger.x Memory.x $(FlexComponents)
+FlexComponents = InstructionReader.x
 CXX = g++
 CXXFLAGS = 
 ComponentsFolder = classes/
@@ -12,7 +13,10 @@ ready:
 test: $(Components:.x=.o) test_asm_interpreter.o
 	$(CXX) $(Components:.x=.o) test_asm_interpreter.o -o test_asm_interpreter
 
-$(Components:.x=.o) :
+$(FlexComponents:.x=.cpp):
+	flex -o $(ComponentsFolder)$(@) $(ComponentsFolder)$(@:.cpp=.l)
+
+$(Components:.x=.o) : $(FlexComponents:.x=.cpp)
 	$(CXX) -c $(CXXFLAGS) $(ComponentsFolder)$(@:.o=.cpp) -o $@
 
 test_asm_interpreter.o:
@@ -20,4 +24,9 @@ test_asm_interpreter.o:
 
 clean:
 	rm -f test/
-	rm *.o
+	cd $(ComponentsFolder)
+	rm -f $(Components:.x=.o)
+	rm -f $(FlexComponents:.x=.cpp)
+	cd ..
+	
+	
