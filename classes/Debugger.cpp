@@ -2,18 +2,43 @@
 #include <stdlib.h>
 #include "../headers/Debugger.hpp"
 
-//void Debbuger::step();
-//void Debugger::run();
-//void Debugger::start();
+bool Debugger::step(){
+	return processor->execute(getInstruction(processor->nextStep()));
+}
+
+void Debugger::run(){
+	start();
+	while(step()){
+		//odczekaj instructionTime;
+	}
+}
+
+void Debugger::start(/*adres startowy?*/){
+	//ustaw na poczatku czy co?
+}
 
 //void break...
 //void continue();
 
-//void Debugger::setInstructionTime(int milis);
-//void Debugger::showInstructionTime();
+void Debugger::setInstructionTime(int milis){
+	instructionTime = milis;
+}
+
+void Debugger::showInstructionTime(){
+	printf("Czas wykonania pojedynczej operacji jest ustawiony na %d milisekund.\n", instructionTime);
+}
 
 //void showMemoryView();
 //void showErrorView();
+
+Instruction* Debugger::getInstruction(int address){
+	int i;
+	for(i = 0; i< /*ilosc instrukcji*/1; ++i)
+		if(instructions[i]->getAddress() == address)
+			return instructions[i];
+
+	return NULL;
+}
 
 Debugger::Debugger(char* fileName){
 	logger = new Logger((char*)"logs");
@@ -21,6 +46,7 @@ Debugger::Debugger(char* fileName){
 	instructions = reader->getListOfInstructions();
 	delete reader;
 	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
+	instructionTime = 1000;
 }
 
 Debugger::Debugger(char* fileName, bool isVisualized){
@@ -28,8 +54,8 @@ Debugger::Debugger(char* fileName, bool isVisualized){
 }
 
 Debugger::~Debugger(){
-	delete logger;
 	delete processor;
+	delete logger;
 	free(instructions);
 }
 

@@ -6,7 +6,7 @@
 #include "../headers/Stack.hpp"
 #include "../headers/Logger.hpp"
 #include "../headers/Message.hpp"
-	
+
 Processor_8086::Processor_8086(Memory* memory, int offset, Logger* logger){
 	this->memory = memory;
 	this->stack = new Stack(1<<24, logger);
@@ -23,7 +23,31 @@ Processor_8086::~Processor_8086(){
 int Processor_8086::nextStep(){
 	return ++IP;
 }
-	
+
+bool Processor_8086::execute(Instruction* instruction){
+	char* msg = (char*)malloc(200*sizeof(char));
+
+	if(instruction->getNumberOfArguments() <=2 && instruction->getNumberOfArguments() >= 0){
+		if(instruction->getNumberOfArguments() == 2)
+			sprintf(msg, "Instruction execution attemption: %s %s %s.", instruction->getName(),
+				instruction->getArgument(0)->getExpression(),
+				instruction->getArgument(1)->getExpression());
+		else if(instruction->getNumberOfArguments() == 1)
+			sprintf(msg, "Instruction execution attemption: %s %s.", instruction->getName(),
+				instruction->getArgument(0)->getExpression());
+		else if(instruction->getNumberOfArguments() == 0)
+			sprintf(msg, "Instruction execution attemption: %s.", instruction->getName());
+
+		logger->log(new Message(msg, NOTIFICATION));
+
+	} else{
+		sprintf(msg, "Incorrect number of arguments: %s - %d arguments.", instruction->getName(), instruction->getNumberOfArguments());
+		logger->log(new Message(msg, WARNING));
+	}
+
+	free(msg);
+}
+
 /*void Processor_8086::ADC(char* arg1, char* arg2){
 	if(getValue(arg1) + getValue(arg2)/WORD_BOUNDARY > 0)
 		STC();
@@ -33,7 +57,7 @@ int Processor_8086::nextStep(){
 void Processor_8086::ADD(char* arg1, char* arg2){
 	setValue(arg1, getValue(arg1) + getValue(arg2));
 }
-	
+
 void Processor_8086::AND(char* arg1, char* arg2){
 	setValue(arg1, getValue(arg1) & getValue(arg2));
 }

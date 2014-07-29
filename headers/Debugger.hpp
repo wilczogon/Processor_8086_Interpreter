@@ -8,7 +8,7 @@
 
 class Debugger{
 public:
-	void step();
+	bool step();
 	void run();
 	void start();
 	//void break...
@@ -22,6 +22,8 @@ public:
 	~Debugger();
 
 private:
+	Instruction* getInstruction(int address);
+	int instructionTime;
 	Instruction** instructions;
 	Processor_8086* processor;
 	Logger* logger;

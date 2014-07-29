@@ -4,6 +4,7 @@
 #include "Stack.hpp"
 #include "Memory.hpp"
 #include "Logger.hpp"
+#include "Instruction.hpp"
 
 class Processor_8086{
 public:
@@ -14,6 +15,8 @@ public:
 	~Processor_8086();
 	
 	int nextStep();
+
+	bool execute(Instruction* instruction);
 	
 	// lista instrukcji
 	void AAA();
