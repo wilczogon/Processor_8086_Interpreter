@@ -5,7 +5,7 @@ class Operand{
 public:
 	char* getExpression();
 	Operand(char* expression);
-	~Operand();
+	virtual ~Operand();
 
 private:
 	char* expression;
