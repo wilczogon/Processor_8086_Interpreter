@@ -1766,5 +1766,4 @@ InstructionReader::InstructionReader(char* fileName, Logger* logger){
 	InstructionReader::logger = logger;
 	InstructionReader::instructionList = new list<Instruction>();
 	yyin = fopen( fileName, "r" );
-	//tu przetwarzaj sobie jakoś fileName
 }

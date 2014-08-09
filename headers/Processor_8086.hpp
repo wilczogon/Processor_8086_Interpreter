@@ -182,6 +182,9 @@ private:
 	
 	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
 	
+	int getValue(Operand* arg);
+	void setValue(Operand* arg, int value);
+	
 	int getRegistryValue(const char* arg);
 	void setRegistryValue(const char* arg, int value);
 	/*

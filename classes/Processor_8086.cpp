@@ -8,6 +8,8 @@
 #include "../headers/Message.hpp"
 #include "../headers/Operand.hpp"
 #include "../headers/Registry.hpp"
+#include "../headers/MemoryAddress.hpp"
+#include "../headers/NumericValue.hpp"
 
 Processor_8086::Processor_8086(Memory* memory, int offset, Logger* logger){
 	this->memory = memory;
@@ -114,7 +116,7 @@ void Processor_8086::ADC(Operand* arg1, Operand* arg2){
   int valueOfArg1;
   int valueOfArg2;
     
-  //TODO
+  setValue(arg1, getValue(arg1) + getValue(arg2) + (flags & CARRY_FLAG != 0 ? 1: 0)); 
 }
 /*
 void Processor_8086::ADD(char* arg1, char* arg2){
@@ -183,7 +185,7 @@ void Processor_8086::DIV(char* arg){
 	}
 */
 
-	int getValue(Operand* arg){
+	int Processor_8086::getValue(Operand* arg){
 	  if(dynamic_cast<Registry*>(arg) != NULL){
 	    Registry* reg = dynamic_cast<Registry*>(arg);
 	    return getRegistryValue(reg->getExpression());
@@ -195,6 +197,18 @@ void Processor_8086::DIV(char* arg){
 	  } else if(dynamic_cast<NumericValue*>(arg) != NULL){
 	    NumericValue* val = dynamic_cast<NumericValue*>(arg);
 	    return val->getValue();
+	    
+	  }
+	}
+	
+	void Processor_8086::setValue(Operand* arg, int value){
+	  if(dynamic_cast<Registry*>(arg) != NULL){
+	    Registry* reg = dynamic_cast<Registry*>(arg);
+	    setRegistryValue(reg->getExpression(), value);
+	    
+	  } else if(dynamic_cast<MemoryAddress*>(arg) != NULL){
+	    MemoryAddress* mem = dynamic_cast<MemoryAddress*>(arg); //TODO
+	    //return 0;//getRegistryValue(reg->getExpression());
 	    
 	  }
 	}
