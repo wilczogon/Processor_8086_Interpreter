@@ -6,6 +6,8 @@
 #include "../headers/Stack.hpp"
 #include "../headers/Logger.hpp"
 #include "../headers/Message.hpp"
+#include "../headers/Operand.hpp"
+#include "../headers/Registry.hpp"
 
 Processor_8086::Processor_8086(Memory* memory, int offset, Logger* logger){
 	this->memory = memory;
@@ -108,12 +110,13 @@ void Processor_8086::AAS(){
 	AL = (AL & 0x11111111);
 }
 
-/*void Processor_8086::ADC(char* arg1, char* arg2){
-	if(getValue(arg1) + getValue(arg2)/WORD_BOUNDARY > 0)
-		STC();
-	ADD(arg1, arg2);
+void Processor_8086::ADC(Operand* arg1, Operand* arg2){
+  int valueOfArg1;
+  int valueOfArg2;
+    
+  //TODO
 }
-
+/*
 void Processor_8086::ADD(char* arg1, char* arg2){
 	setValue(arg1, getValue(arg1) + getValue(arg2));
 }
@@ -179,64 +182,81 @@ void Processor_8086::DIV(char* arg){
 		flags = flags | INTERRUPT_FLAG;
 	}
 */
+
+	int getValue(Operand* arg){
+	  if(dynamic_cast<Registry*>(arg) != NULL){
+	    Registry* reg = dynamic_cast<Registry*>(arg);
+	    return getRegistryValue(reg->getExpression());
+	    
+	  } else if(dynamic_cast<MemoryAddress*>(arg) != NULL){
+	    MemoryAddress* mem = dynamic_cast<MemoryAddress*>(arg); //TODO
+	    return 0;//getRegistryValue(reg->getExpression());
+	    
+	  } else if(dynamic_cast<NumericValue*>(arg) != NULL){
+	    NumericValue* val = dynamic_cast<NumericValue*>(arg);
+	    return val->getValue();
+	    
+	  }
+	}
 	
-	/*int getValue(const char* arg){
+	int Processor_8086::getRegistryValue(const char* arg){
 		if(strcmp(arg, "AX") == 0)
-			return AX;
+		  return AH<<8 + AL;
 		else if(strcmp(arg, "BX") == 0)
-			return BX;
+		  return BH<<8 + BL;
 		else if(strcmp(arg, "CX") == 0)
-			return CX;
+		  return CH<<8 + CL;
 		else if(strcmp(arg, "DX") == 0)
-			return DX;
+		  return DH<<8 + DL;
 		else if(strcmp(arg, "AL") == 0)
-			return AX % BYTE_BOUNDARY;
+			return AL;
 		else if(strcmp(arg, "BL") == 0)
-			return BX % BYTE_BOUNDARY;
+			return BL;
 		else if(strcmp(arg, "CL") == 0)
-			return CX % BYTE_BOUNDARY;
+			return CL;
 		else if(strcmp(arg, "DL") == 0)
-			return DX % BYTE_BOUNDARY;
+			return DL;
 		else if(strcmp(arg, "AH") == 0)
-			return AX / BYTE_BOUNDARY;
+			return AH;
 		else if(strcmp(arg, "BH") == 0)
-			return BX / BYTE_BOUNDARY;
+			return BH;
 		else if(strcmp(arg, "CH") == 0)
-			return CX / BYTE_BOUNDARY;
+			return CH;
 		else if(strcmp(arg, "DH") == 0)
-			return DX / BYTE_BOUNDARY;
-		//else if(strcmp(arg, "AX") == 0)
-		//	return AX;
-		else return 0;// w takim wypadku musisz policzyć wartosć wyrażenia TODO
+			return DH;
 			
 	}
 	
-	void setValue(const char* arg, int value){
-		if(strcmp(arg, "AX") == 0)
-			AX = value % TOP_BOUNDARY;
-		else if(strcmp(arg, "BX") == 0)
-			BX = value % TOP_BOUNDARY;
-		else if(strcmp(arg, "CX") == 0)
-			CX = value % TOP_BOUNDARY;
-		else if(strcmp(arg, "DX") == 0)
-			DX = value % TOP_BOUNDARY;
-		else if(strcmp(arg, "AL") == 0)
-			AX = (AX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+	void Processor_8086::setRegistryValue(const char* arg, int value){
+		if(strcmp(arg, "AX") == 0){
+			  AL = value & 0x11111111;
+			  AH = value>>8;
+		}else if(strcmp(arg, "BX") == 0){
+			  BL = value & 0x11111111;
+			  BH = value>>8;
+		}else if(strcmp(arg, "CX") == 0){
+			  CL = value & 0x11111111;
+			  CH = value>>8;
+		}else if(strcmp(arg, "DX") == 0){
+			  DL = value & 0x11111111;
+			  DH = value>>8;
+		}else if(strcmp(arg, "AL") == 0)
+			AL = value;
 		else if(strcmp(arg, "BL") == 0)
-			BX = (BX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+			BL = value;
 		else if(strcmp(arg, "CL") == 0)
-			CX = (CX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+			CL = value;
 		else if(strcmp(arg, "DL") == 0)
-			DX = (DX / BYTE_BOUNDARY)*BYTE_BOUNDARY + value % BYTE_BOUNDARY;
+			DL = value;
 		else if(strcmp(arg, "AH") == 0)
-			AX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + AX % BYTE_BOUNDARY;
+			AH = value;
 		else if(strcmp(arg, "BH") == 0)
-			BX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + BX % BYTE_BOUNDARY;
+			BH = value;
 		else if(strcmp(arg, "CH") == 0)
-			CX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + CX % BYTE_BOUNDARY;
+			CH = value;
 		else if(strcmp(arg, "DH") == 0)
-			DX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + DX % BYTE_BOUNDARY;
-	}*/
+			DH = value;
+	}
 	
 /*bool Processor_8086::isByteRegistry(char* arg){
 	if(strcmp(arg, "AL") == 0)

@@ -5,6 +5,7 @@
 #include "Memory.hpp"
 #include "Logger.hpp"
 #include "Instruction.hpp"
+#include "Operand.hpp"
 
 class Processor_8086{
 public:
@@ -24,7 +25,7 @@ public:
 	void AAM();
 	void AAS();
 	
-	void ADC(char* arg1, char* arg2);
+	void ADC(Operand* arg1, Operand* arg2);
 	void ADD(char* arg1, char* arg2);
 	void AND(char* arg1, char* arg2);
 	void CALL(char* arg);
@@ -181,9 +182,9 @@ private:
 	
 	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
 	
-	/*int getValue(const char* arg);
-	void setValue(const char* arg, int value);
-	
+	int getRegistryValue(const char* arg);
+	void setRegistryValue(const char* arg, int value);
+	/*
 	bool isByteRegistry(char* arg);
 	bool isWordRegistry(char* arg);
 	bool isValue(char* arg);
