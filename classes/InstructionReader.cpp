@@ -458,7 +458,9 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "classes/InstructionReader.l"
-#line 462 "classes/InstructionReader.cpp"
+#line 4 "classes/InstructionReader.l"
+#include "../headers/InstructionReader.hpp"
+#line 464 "classes/InstructionReader.cpp"
 
 #define INITIAL 0
 
@@ -645,12 +647,12 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 3 "classes/InstructionReader.l"
+#line 138 "classes/InstructionReader.l"
 
 
 
 
-#line 654 "classes/InstructionReader.cpp"
+#line 656 "classes/InstructionReader.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -735,10 +737,10 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 7 "classes/InstructionReader.l"
+#line 142 "classes/InstructionReader.l"
 ECHO;
 	YY_BREAK
-#line 742 "classes/InstructionReader.cpp"
+#line 744 "classes/InstructionReader.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1736,7 +1738,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 7 "classes/InstructionReader.l"
+#line 142 "classes/InstructionReader.l"
 
 
 
@@ -1747,21 +1749,17 @@ void yyfree (void * ptr )
 
 
 Instruction** InstructionReader::getListOfInstructions(){
-	//mock function
 	Instruction** instructions = (Instruction**)malloc(2*sizeof(Instruction*));
-	instructions[0] = new Instruction((char*)"MOV", 10, 0, NULL);
-	instructions[1] = new Instruction((char*)"MOV2", 11, 0, NULL);
-
+	copy(instructionList->begin(),instructionList->end(),*instructions);;
 	return instructions;
 }
 
 int InstructionReader::getNumberOfInstructions(){
-	//mock function
-	return 2;
+	return InstructionReader::instructionList->size();
 }
 
 void InstructionReader::readInstructions(){
-	
+	yylex();
 }
 
 InstructionReader::InstructionReader(char* fileName, Logger* logger){
@@ -1770,5 +1768,3 @@ InstructionReader::InstructionReader(char* fileName, Logger* logger){
 	yyin = fopen( fileName, "r" );
 	//tu przetwarzaj sobie jakoś fileName
 }
-
-
