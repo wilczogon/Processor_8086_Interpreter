@@ -1,5 +1,5 @@
 #ifndef INSTRUCTION_READER
-#define ISTRUCTION_READER
+#define INSTRUCTION_READER
 #include "Instruction.hpp"
 #include "Logger.hpp"
 #include <list>
