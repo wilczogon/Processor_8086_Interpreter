@@ -31,17 +31,35 @@ bool Processor_8086::execute(Instruction* instruction){
 	char* msg = (char*)malloc(200*sizeof(char));
 
 	if(instruction->getNumberOfArguments() <=2 && instruction->getNumberOfArguments() >= 0){
-		if(instruction->getNumberOfArguments() == 2)
+		if(instruction->getNumberOfArguments() == 2){
 			sprintf(msg, "Instruction execution attemption: %s %s %s.", instruction->getName(),
 				instruction->getArgument(0)->getExpression(),
 				instruction->getArgument(1)->getExpression());
-		else if(instruction->getNumberOfArguments() == 1)
+			
+			logger->log(new Message(msg, NOTIFICATION));
+			
+		} else if(instruction->getNumberOfArguments() == 1){
 			sprintf(msg, "Instruction execution attemption: %s %s.", instruction->getName(),
 				instruction->getArgument(0)->getExpression());
-		else if(instruction->getNumberOfArguments() == 0)
+			
+			logger->log(new Message(msg, NOTIFICATION));
+			
+		} else if(instruction->getNumberOfArguments() == 0){
 			sprintf(msg, "Instruction execution attemption: %s.", instruction->getName());
-
-		logger->log(new Message(msg, NOTIFICATION));
+			
+			logger->log(new Message(msg, NOTIFICATION));
+			
+			if(strcmp(instruction->getName(), "AAA") == 0)
+			  AAA();
+			else if(strcmp(instruction->getName(), "AAD") == 0)
+			  AAD();
+			else if(strcmp(instruction->getName(), "AAM") == 0)
+			  AAM();
+			else if(strcmp(instruction->getName(), "AAS") == 0)
+			  AAS();
+			else
+			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
+		}
 
 	} else{
 		sprintf(msg, "Incorrect number of arguments: %s - %d arguments.", instruction->getName(), instruction->getNumberOfArguments());
@@ -72,9 +90,22 @@ void Processor_8086::AAD(){
 }
 
 void Processor_8086::AAM(){
+  AH = AL/10;
+  AL = AL%10;
 }
 
 void Processor_8086::AAS(){
+  if((AL & 0x11111111)>9 || flags & AUX_CARRY_FLAG){
+	  AL -= 6;
+	  AH--;
+	  flags = flags | AUX_CARRY_FLAG;
+	  flags = flags | CARRY_FLAG;
+	} else{
+	  flags = flags & ~AUX_CARRY_FLAG;
+	  flags = flags & ~CARRY_FLAG;
+	}
+	
+	AL = (AL & 0x11111111);
 }
 
 /*void Processor_8086::ADC(char* arg1, char* arg2){
