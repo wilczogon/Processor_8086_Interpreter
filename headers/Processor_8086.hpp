@@ -181,7 +181,7 @@ private:
 	
 	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
 	
-	int getValue(const char* arg);
+	/*int getValue(const char* arg);
 	void setValue(const char* arg, int value);
 	
 	bool isByteRegistry(char* arg);
@@ -189,7 +189,7 @@ private:
 	bool isValue(char* arg);
 	bool isMemoryAddress(char* arg);
 	bool isLabel(char* arg);
-	
+	*/
 	
 };
 

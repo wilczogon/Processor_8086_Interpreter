@@ -25,6 +25,9 @@ int Processor_8086::nextStep(){
 }
 
 bool Processor_8086::execute(Instruction* instruction){
+	if(instruction == NULL)
+	  return false;
+	
 	char* msg = (char*)malloc(200*sizeof(char));
 
 	if(instruction->getNumberOfArguments() <=2 && instruction->getNumberOfArguments() >= 0){
@@ -46,6 +49,32 @@ bool Processor_8086::execute(Instruction* instruction){
 	}
 
 	free(msg);
+}
+
+void Processor_8086::AAA(){
+	if((AL & 0x11111111)>9 || flags & AUX_CARRY_FLAG){
+	  AL += 6;
+	  AH++;
+	  flags = flags | AUX_CARRY_FLAG;
+	  flags = flags | CARRY_FLAG;
+	} else{
+	  flags = flags & ~AUX_CARRY_FLAG;
+	  flags = flags & ~CARRY_FLAG;
+	}
+	
+	AL = (AL & 0x11111111);
+	
+}
+
+void Processor_8086::AAD(){
+	AL = (AH * 10) + AL;
+	AH = 0;
+}
+
+void Processor_8086::AAM(){
+}
+
+void Processor_8086::AAS(){
 }
 
 /*void Processor_8086::ADC(char* arg1, char* arg2){
@@ -178,7 +207,7 @@ void Processor_8086::DIV(char* arg){
 			DX = (value % BYTE_BOUNDARY)*BYTE_BOUNDARY + DX % BYTE_BOUNDARY;
 	}*/
 	
-bool Processor_8086::isByteRegistry(char* arg){
+/*bool Processor_8086::isByteRegistry(char* arg){
 	if(strcmp(arg, "AL") == 0)
 		return true;
 	else if(strcmp(arg, "BL") == 0)
@@ -222,5 +251,5 @@ bool Processor_8086::isMemoryAddress(char* arg){
 
 bool isLabel(char* arg){
 	return false;
-}
+}*/
 

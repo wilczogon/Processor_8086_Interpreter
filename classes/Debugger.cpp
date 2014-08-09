@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "../headers/Debugger.hpp"
 
 bool Debugger::step(){
@@ -9,7 +10,7 @@ bool Debugger::step(){
 void Debugger::run(){
 	start();
 	while(step()){
-		//odczekaj instructionTime;
+		usleep(instructionTime);
 	}
 }
 
@@ -33,7 +34,7 @@ void Debugger::showInstructionTime(){
 
 Instruction* Debugger::getInstruction(int address){
 	int i;
-	for(i = 0; i< /*ilosc instrukcji*/1; ++i)
+	for(i = 0; i< instructionNo; ++i)
 		if(instructions[i]->getAddress() == address)
 			return instructions[i];
 
@@ -44,6 +45,7 @@ Debugger::Debugger(char* fileName){
 	logger = new Logger((char*)"logs");
 	InstructionReader* reader = new InstructionReader(fileName, logger);
 	instructions = reader->getListOfInstructions();
+	//instructionNo = reader->getNumberOfInstructions();
 	delete reader;
 	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
 	instructionTime = 1000;

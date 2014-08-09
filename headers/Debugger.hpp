@@ -27,6 +27,7 @@ private:
 	Instruction** instructions;
 	Processor_8086* processor;
 	Logger* logger;
+	int instructionNo;
 };
 
 #endif
