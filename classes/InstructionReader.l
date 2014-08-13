@@ -2,6 +2,9 @@
 
 %{
 #include "../headers/InstructionReader.hpp"
+
+InstructionReader* currentInstructionReader;
+int instructionCounter;
 %}
 
 AAA			"AAA"|"aaa"
@@ -131,13 +134,16 @@ XOR			"XOR"|"xor"
 label			[:alnum:]+
 registry		ax|bx|cx|dx|si|di
 half_registry	al|bl|cl|dl|ah|bh|ch|dh
-address			bx|si|di|[:digit:]+
+address			bx|si|di|[:digit:]+|label
 nvalue			[:digit:]+
-value			\"[:alnum:]+\"
+value			\'[':alnum:]+\'
 
 %%
 
-{label}
+{label}[ /t]+":"[ /t/n]+	{
+								//marker
+								currentInstructionReader->addLabel(yytext);
+							}
 
 %%
 
@@ -158,11 +164,27 @@ int InstructionReader::getNumberOfInstructions(){
 }
 
 void InstructionReader::readInstructions(){
+	instructionCounter = 0;
 	yylex();
+}
+
+void InstructionReader::addInstruction(Instruction* instruction){
+	instructionList->push_back(*instruction);
+}
+
+void InstructionReader::addLabel(char* text){
+	string* temp = new string(text);
+	InstructionReader::labelList->push_back(*temp);
+	delete temp;
+	InstructionReader::labelAddressList->push_back(instructionCounter);
+	
+	//labelMap->insert( std::pair<string,int>(*(new string(text)),instructionCounter) );
 }
 
 InstructionReader::InstructionReader(char* fileName, Logger* logger){
 	InstructionReader::logger = logger;
 	InstructionReader::instructionList = new list<Instruction>();
+	InstructionReader::labelList = new list<string>();
+	InstructionReader::labelAddressList = new list<int>();
 	yyin = fopen( fileName, "r" );
 }

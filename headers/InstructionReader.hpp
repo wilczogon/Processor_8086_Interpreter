@@ -3,6 +3,8 @@
 #include "Instruction.hpp"
 #include "Logger.hpp"
 #include <list>
+#include <map>
+#include <string>
 
 using namespace std;
 
@@ -11,12 +13,16 @@ public:
 	Instruction** getListOfInstructions();
 	int getNumberOfInstructions();
 	void readInstructions();
+	void addLabel(char* label);
+	void addInstruction(Instruction* instruction);
 
 	InstructionReader(char* fileName, Logger* logger);
 
 private:
 	Logger* logger;
 	list<Instruction>* instructionList;
+	list<string>* labelList;
+	list<int>* labelAddressList;
 };
 
 #endif

@@ -381,9 +381,9 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[8] =
+static yyconst flex_int16_t yy_accept[11] =
     {   0,
-        0,    0,    3,    2,    1,    1,    0
+        0,    0,    3,    2,    2,    0,    0,    0,    1,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -391,16 +391,16 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    2,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    2,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    3,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    4,    1,    1,    1,
 
-        1,    1,    1,    1,    1,    1,    1,    2,    2,    2,
-        1,    1,    1,    1,    1,    1,    2,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    4,    4,    5,
+        1,    1,    1,    1,    1,    2,    4,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -418,29 +418,35 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[3] =
+static yyconst flex_int32_t yy_meta[6] =
     {   0,
-        1,    2
+        1,    2,    3,    3,    2
     } ;
 
-static yyconst flex_int16_t yy_base[9] =
+static yyconst flex_int16_t yy_base[14] =
     {   0,
-        0,    0,    4,    5,    0,    0,    5,    1
+        0,    2,   15,   16,   12,    3,   11,    0,    0,   16,
+        6,    8,   10
     } ;
 
-static yyconst flex_int16_t yy_def[9] =
+static yyconst flex_int16_t yy_def[14] =
     {   0,
-        7,    1,    7,    7,    8,    8,    0,    7
+       11,   11,   10,   10,   12,   10,   12,   13,   13,    0,
+       10,   10,   10
     } ;
 
-static yyconst flex_int16_t yy_nxt[8] =
+static yyconst flex_int16_t yy_nxt[22] =
     {   0,
-        4,    5,    6,    7,    3,    7,    7
+        4,    4,    4,    4,    6,    8,    5,    5,    5,    7,
+        7,    9,    6,    6,   10,    3,   10,   10,   10,   10,
+       10
     } ;
 
-static yyconst flex_int16_t yy_chk[8] =
+static yyconst flex_int16_t yy_chk[22] =
     {   0,
-        1,    1,    8,    3,    7,    7,    7
+        1,    1,    2,    2,    6,    6,   11,   11,   11,   12,
+       12,   13,    7,    5,    3,   10,   10,   10,   10,   10,
+       10
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -460,7 +466,10 @@ char *yytext;
 #line 1 "classes/InstructionReader.l"
 #line 4 "classes/InstructionReader.l"
 #include "../headers/InstructionReader.hpp"
-#line 464 "classes/InstructionReader.cpp"
+
+InstructionReader* currentInstructionReader;
+int instructionCounter;
+#line 473 "classes/InstructionReader.cpp"
 
 #define INITIAL 0
 
@@ -647,10 +656,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 138 "classes/InstructionReader.l"
+#line 141 "classes/InstructionReader.l"
 
 
-#line 654 "classes/InstructionReader.cpp"
+#line 663 "classes/InstructionReader.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -703,13 +712,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 8 )
+				if ( yy_current_state >= 11 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 5 );
+		while ( yy_base[yy_current_state] != 16 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -735,15 +744,18 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 140 "classes/InstructionReader.l"
-
+#line 143 "classes/InstructionReader.l"
+{
+								//marker
+								currentInstructionReader->addLabel(yytext);
+							}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 142 "classes/InstructionReader.l"
+#line 148 "classes/InstructionReader.l"
 ECHO;
 	YY_BREAK
-#line 747 "classes/InstructionReader.cpp"
+#line 759 "classes/InstructionReader.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1035,7 +1047,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 8 )
+			if ( yy_current_state >= 11 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1063,11 +1075,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 8 )
+		if ( yy_current_state >= 11 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 7);
+	yy_is_jam = (yy_current_state == 10);
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1741,7 +1753,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 142 "classes/InstructionReader.l"
+#line 148 "classes/InstructionReader.l"
 
 
 
@@ -1762,11 +1774,27 @@ int InstructionReader::getNumberOfInstructions(){
 }
 
 void InstructionReader::readInstructions(){
+	instructionCounter = 0;
 	yylex();
+}
+
+void InstructionReader::addInstruction(Instruction* instruction){
+	instructionList->push_back(*instruction);
+}
+
+void InstructionReader::addLabel(char* text){
+	string* temp = new string(text);
+	InstructionReader::labelList->push_back(*temp);
+	delete temp;
+	InstructionReader::labelAddressList->push_back(instructionCounter);
+	
+	//labelMap->insert( std::pair<string,int>(*(new string(text)),instructionCounter) );
 }
 
 InstructionReader::InstructionReader(char* fileName, Logger* logger){
 	InstructionReader::logger = logger;
 	InstructionReader::instructionList = new list<Instruction>();
+	InstructionReader::labelList = new list<string>();
+	InstructionReader::labelAddressList = new list<int>();
 	yyin = fopen( fileName, "r" );
 }
