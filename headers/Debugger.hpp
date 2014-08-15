@@ -5,6 +5,7 @@
 #include "Logger.hpp"
 #include "InstructionReader.hpp"
 #include "Memory.hpp"
+#include "GraphicSystem.hpp"
 
 class Debugger{
 public:
@@ -27,6 +28,7 @@ private:
 	Instruction** instructions;
 	Processor_8086* processor;
 	Logger* logger;
+	GraphicSystem* gui;
 	int instructionNo;
 };
 

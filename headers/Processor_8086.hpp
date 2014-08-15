@@ -141,6 +141,9 @@ public:
 	void XLAT();	// TODO
 	void XOR(char* arg1, char* arg2);
 	
+	int getValue(Operand* arg);
+	int getRegistryValue(const char* arg);
+	
 private:
 	
 	const static int WORD_BOUNDARY = 1<<16;
@@ -182,10 +185,8 @@ private:
 	
 	// struktura pamięci - http://www.cosc.brocku.ca/~bockusd/3p92/Local_Pages/8086_achitecture.htm
 	
-	int getValue(Operand* arg);
 	void setValue(Operand* arg, int value);
 	
-	int getRegistryValue(const char* arg);
 	void setRegistryValue(const char* arg, int value);
 	/*
 	bool isByteRegistry(char* arg);

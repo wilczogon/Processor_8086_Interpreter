@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "../headers/Debugger.hpp"
+#include "../headers/GraphicSystem.hpp"
 
 bool Debugger::step(){
 	return processor->execute(getInstruction(processor->nextStep()));
@@ -9,7 +10,10 @@ bool Debugger::step(){
 
 void Debugger::run(){
 	start();
+	gui->paintStandardView();
+	usleep(instructionTime);
 	while(step()){
+		gui->paintStandardView();
 		usleep(instructionTime);
 	}
 }
@@ -48,6 +52,7 @@ Debugger::Debugger(char* fileName){
 	//instructionNo = reader->getNumberOfInstructions();
 	delete reader;
 	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
+	gui = new GraphicSystem(processor, logger);
 	instructionTime = 1000;
 }
 
@@ -56,6 +61,7 @@ Debugger::Debugger(char* fileName, bool isVisualized){
 }
 
 Debugger::~Debugger(){
+	delete gui;
 	delete processor;
 	delete logger;
 	free(instructions);
