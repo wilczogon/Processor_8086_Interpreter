@@ -2513,9 +2513,12 @@ CS			"CS"|"cs"
 											
 											currentInstructionReader->addInstruction(instruction);
 										}
+[ /t/n]+
+
+"end"[ /t]+{:label:}[ /t/n]+
 
 %%
-
+//todo
 #include <stdio.h>
 #include <stdlib.h>
 #include "../headers/InstructionReader.hpp"
