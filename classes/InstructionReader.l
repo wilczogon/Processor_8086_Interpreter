@@ -186,6 +186,12 @@ CS			"CS"|"cs"
 
 %%
 
+
+
+"end"[ /t]+{label}[ /t/n]+			{
+	
+}
+
 {label}[ /t]+":"[ /t/n]+	{
 								//marker
 								currentInstructionReader->addLabel(yytext);
@@ -2513,9 +2519,10 @@ CS			"CS"|"cs"
 											
 											currentInstructionReader->addInstruction(instruction);
 										}
-[ /t/n]+
 
-"end"[ /t]+{:label:}[ /t/n]+
+[ /t/n]+								{
+	
+}
 
 %%
 //todo
