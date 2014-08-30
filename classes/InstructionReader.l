@@ -2529,13 +2529,20 @@ CS			"CS"|"cs"
 //todo
 #include <stdio.h>
 #include <stdlib.h>
+#include <iterator>
 #include "../headers/InstructionReader.hpp"
 #include "../headers/Instruction.hpp"
 
 
 Instruction** InstructionReader::getListOfInstructions(){
 	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
-	copy(instructionList->begin(),instructionList->end(),*instructions);;
+	//copy(instructionList->begin(),instructionList->end(), *instructions);
+	int i = 0;
+	for (iterator<Instruction> it=instructionList->begin(); it!=instructionList->end(); it++){
+	  instructions[i] = &it;
+	  i++;
+	 }
+	
 	return instructions;
 }
 
