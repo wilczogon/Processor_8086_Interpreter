@@ -21765,7 +21765,7 @@ void yyfree (void * ptr )
 
 
 Instruction** InstructionReader::getListOfInstructions(){
-	Instruction** instructions = (Instruction**)malloc(2*sizeof(Instruction*));
+	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
 	copy(instructionList->begin(),instructionList->end(),*instructions);;
 	return instructions;
 }

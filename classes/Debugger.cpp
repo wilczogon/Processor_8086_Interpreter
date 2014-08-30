@@ -48,10 +48,11 @@ Instruction* Debugger::getInstruction(int address){
 Debugger::Debugger(char* fileName){
 	logger = new Logger((char*)"logs");
 	InstructionReader* reader = new InstructionReader(fileName, logger);
+	reader->readInstructions();
 	instructions = reader->getListOfInstructions();
 	instructionNo = reader->getNumberOfInstructions();
 	if(instructionNo <= 0)
-	  logger->log(new Message("Number of instructions is equal or less than zero"), WARNING);
+	  logger->log(new Message((char*)"Number of instructions is equal or less than zero", WARNING));
 	delete reader;
 	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
 	gui = new GraphicSystem(processor, logger);

@@ -1,7 +1,7 @@
 Components = Instruction.x Message.x Logger.x Stack.x NumericValue.x MemoryAddress.x Registry.x Operand.x Processor_8086.x Debugger.x Memory.x GraphicSystem.x $(FlexComponents)
 FlexComponents = InstructionReader.x
 CXX = g++
-CXXFLAGS = 
+CXXFLAGS = -g
 ComponentsFolder = classes/
 
 all: test ready

@@ -26,6 +26,18 @@ Instruction::Instruction(char* name, int address, int numberOfArgs, Operand** ar
 	this->args = args;
 }
 
+Instruction::Instruction(const Instruction& instruction){
+  printf("begin");
+  this->name = strdup(instruction.name);
+  this->address = instruction.address;
+  this->argsNo = instruction.argsNo;
+  this->args = (Operand**)malloc(argsNo*sizeof(Operand*));
+  int i;
+  for(i = 0; i<argsNo; ++i)
+    args[i] = instruction.args[i];
+  printf("end");
+}
+
 Instruction::~Instruction(){
 	free(name);
 	int i;

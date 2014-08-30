@@ -9,6 +9,7 @@ public:
 	Operand* getArgument(int no);
 	int getAddress();
 	Instruction(char* name, int address, int numberOfArgs, Operand** args);
+	Instruction(const Instruction& instruction);
 	~Instruction();
 
 private:
