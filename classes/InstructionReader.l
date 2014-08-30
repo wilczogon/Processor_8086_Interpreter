@@ -192,6 +192,10 @@ CS			"CS"|"cs"
 	
 }
 
+";"[\^\n]*"/n"	{
+	
+}
+
 {label}[ /t]+":"[ /t/n]+	{
 								//marker
 								currentInstructionReader->addLabel(yytext);
