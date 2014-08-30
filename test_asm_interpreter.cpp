@@ -26,7 +26,7 @@ int main(int argNo, char** args){
 	
 	printf("Test of NumericValue\n");
 	expression = (char*)"18+2";
-	NumericValue* numericValue = new NumericValue(expression, 20);
+	NumericValue* numericValue = new NumericValue(expression);
 	
 	if(numericValue->getValue() != 20)
 		printf("\tError: getValue()\n");
@@ -40,7 +40,7 @@ int main(int argNo, char** args){
 	
 	printf("Test of MemoryAddress\n");
 	expression = (char*)"18+2";
-	MemoryAddress* memoryAddress = new MemoryAddress(expression, 20);
+	MemoryAddress* memoryAddress = new MemoryAddress(expression);
 	
 	if(memoryAddress->getValue() != 20)
 		printf("\tError: getValue()\n");
@@ -66,7 +66,7 @@ int main(int argNo, char** args){
 	printf("Test of Instruction\n");
 	Operand** arguments = (Operand**)malloc(2*sizeof(Operand*));
 	arguments[0] = new Registry((char*)"AX");
-	arguments[1] = new NumericValue((char*)"2+2", 4);
+	arguments[1] = new NumericValue((char*)"2+2");
 	Instruction* instruction = new Instruction((char*)"MOV", 20, 2, arguments);
 	
 	if(strcmp(instruction->getName(), "MOV") != 0)

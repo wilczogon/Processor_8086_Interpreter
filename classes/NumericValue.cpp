@@ -4,8 +4,8 @@
 #include "../headers/Operand.hpp"
 #include "../headers/NumericValue.hpp"
 
-NumericValue::NumericValue(char* expression, int value): Operand(expression){
-	this->value = value;
+NumericValue::NumericValue(char* expression): Operand(expression){
+	this->value = 0;
 }
 
 int NumericValue::getValue(){

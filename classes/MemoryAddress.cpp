@@ -4,8 +4,8 @@
 #include "../headers/Operand.hpp"
 #include "../headers/MemoryAddress.hpp"
 
-MemoryAddress::MemoryAddress(char* expression, int value): Operand(expression){
-	this->value = value;
+MemoryAddress::MemoryAddress(char* expression): Operand(expression){
+	this->value = 0;
 }
 
 int MemoryAddress::getValue(){

@@ -3,7 +3,7 @@
 
 class MemoryAddress: public Operand{
 public:
-	MemoryAddress(char* expression, int value);
+	MemoryAddress(char* expression);
 	int getValue();
 	
 private:

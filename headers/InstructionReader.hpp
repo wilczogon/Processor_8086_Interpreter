@@ -1,6 +1,9 @@
 #ifndef INSTRUCTION_READER
 #define INSTRUCTION_READER
 #include "Instruction.hpp"
+#include "Registry.hpp"
+#include "NumericValue.hpp"
+#include "MemoryAddress.hpp"
 #include "Logger.hpp"
 #include <list>
 #include <map>

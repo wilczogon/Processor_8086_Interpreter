@@ -15,8 +15,13 @@ static inline char* extractArgument(char* lineptr, int argnr){
 		while(isWhiteSpace(lineptr+cc))
 			cc++;
 		temp = lineptr+cc;
-		while(!isWhiteSpace(lineptr+cc))
+		while(!isWhiteSpace(lineptr+cc)){
+			if(*(lineptr+cc) == '['){
+				while(*(lineptr+cc) != ']')
+					cc++;
+			}
 			cc++;
+		}
 		len = (lineptr+cc) - temp;
 	}
 	char* result = (char*) malloc(sizeof(char) * len);
@@ -157,7 +162,7 @@ SREG			{DS}|{ES}|{SS}|{CS}
 REG				{AX}|{BX}|{CX}|{DX}|{SI}|{DI}|{AL}|{BL}|{CL}|{DL}|{AH}|{BH}|{CH}|{DH}
 memory			"["({BX}|{SI}|{DI}|{immediate})([ /t]*("+"|"-")[ /t]*({BX}|{SI}|{DI}|{immediate}))*"]"|label
 address			{memory}
-immediate		[:digit:]+|[:digit:A-Fa-f]+h|[01]+b
+immediate		([:digit:]+|[:digit:A-Fa-f]+"h"|[01]+"b")([ /t]*"+"[ /t]*([:digit:]+|[:digit:A-Fa-f]+"h"|[01]+"b"))*
 value			\'[:alnum:]+\'
 
 AX			"AX"|"ax"
@@ -228,8 +233,8 @@ CS			"CS"|"cs"
 
 {ADC}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADC");
@@ -240,8 +245,8 @@ CS			"CS"|"cs"
 
 {ADC}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADC");
@@ -252,8 +257,8 @@ CS			"CS"|"cs"
 
 {ADC}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADC");
@@ -264,8 +269,8 @@ CS			"CS"|"cs"
 
 {ADC}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADC");
@@ -276,8 +281,8 @@ CS			"CS"|"cs"
 
 {ADC}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADC");
@@ -288,8 +293,8 @@ CS			"CS"|"cs"
 
 {ADD}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADD");
@@ -300,8 +305,8 @@ CS			"CS"|"cs"
 
 {ADD}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADD");
@@ -312,8 +317,8 @@ CS			"CS"|"cs"
 
 {ADD}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADD");
@@ -324,8 +329,8 @@ CS			"CS"|"cs"
 
 {ADD}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADD");
@@ -336,8 +341,8 @@ CS			"CS"|"cs"
 
 {ADD}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ADD");
@@ -348,8 +353,8 @@ CS			"CS"|"cs"
 
 {AND}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"AND");
@@ -360,8 +365,8 @@ CS			"CS"|"cs"
 
 {AND}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"AND");
@@ -372,8 +377,8 @@ CS			"CS"|"cs"
 
 {AND}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"AND");
@@ -384,8 +389,8 @@ CS			"CS"|"cs"
 
 {AND}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"AND");
@@ -396,8 +401,8 @@ CS			"CS"|"cs"
 
 {AND}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"AND");
@@ -408,7 +413,7 @@ CS			"CS"|"cs"
 
 {CALL}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"CALL");
@@ -419,7 +424,7 @@ CS			"CS"|"cs"
 
 {CALL}[ /t]+{address}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"CALL");
@@ -480,8 +485,8 @@ CS			"CS"|"cs"
 
 {CMP}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"CMP");
@@ -492,8 +497,8 @@ CS			"CS"|"cs"
 
 {CMP}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"CMP");
@@ -504,8 +509,8 @@ CS			"CS"|"cs"
 
 {CMP}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"CMP");
@@ -516,8 +521,8 @@ CS			"CS"|"cs"
 
 {CMP}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"CMP");
@@ -528,8 +533,8 @@ CS			"CS"|"cs"
 
 {CMP}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"CMP");
@@ -590,7 +595,7 @@ CS			"CS"|"cs"
 
 {DEC}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"DEC");
@@ -601,7 +606,7 @@ CS			"CS"|"cs"
 
 {DEC}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"DEC");
@@ -612,7 +617,7 @@ CS			"CS"|"cs"
 
 {DIV}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"DIV");
@@ -623,7 +628,7 @@ CS			"CS"|"cs"
 
 {DIV}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"DIV");
@@ -644,7 +649,7 @@ CS			"CS"|"cs"
 
 {IDIV}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"IDIV");
@@ -655,7 +660,7 @@ CS			"CS"|"cs"
 
 {IDIV}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"IDIV");
@@ -666,7 +671,7 @@ CS			"CS"|"cs"
 
 {IMUL}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"IMUL");
@@ -677,7 +682,7 @@ CS			"CS"|"cs"
 
 {IMUL}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"IMUL");
@@ -688,8 +693,8 @@ CS			"CS"|"cs"
 
 {IN}[ /t]+{AL}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"IN");
@@ -700,8 +705,8 @@ CS			"CS"|"cs"
 
 {IN}[ /t]+{AL}[ /t]*","[ /t]*{DX}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"IN");
@@ -712,8 +717,8 @@ CS			"CS"|"cs"
 
 {IN}[ /t]+{AX}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"IN");
@@ -724,8 +729,8 @@ CS			"CS"|"cs"
 
 {IN}[ /t]+{AX}[ /t]*","[ /t]*{DX}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"IN");
@@ -736,7 +741,7 @@ CS			"CS"|"cs"
 
 {INC}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"INC");
@@ -747,7 +752,7 @@ CS			"CS"|"cs"
 
 {INC}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"INC");
@@ -758,7 +763,7 @@ CS			"CS"|"cs"
 
 {INT}[ /t]+{immediate}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new NumericValue(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"INT");
@@ -789,7 +794,7 @@ CS			"CS"|"cs"
 
 {JA}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JA");
@@ -800,7 +805,7 @@ CS			"CS"|"cs"
 
 {JAE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JAE");
@@ -811,7 +816,7 @@ CS			"CS"|"cs"
 
 {JB}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JB");
@@ -822,7 +827,7 @@ CS			"CS"|"cs"
 
 {JBE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JBE");
@@ -833,7 +838,7 @@ CS			"CS"|"cs"
 
 {JC}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JC");
@@ -844,7 +849,7 @@ CS			"CS"|"cs"
 
 {JCXZ}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"JCXZ");
@@ -855,7 +860,7 @@ CS			"CS"|"cs"
 
 {JE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JE");
@@ -866,7 +871,7 @@ CS			"CS"|"cs"
 
 {JG}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JG");
@@ -877,7 +882,7 @@ CS			"CS"|"cs"
 
 {JGE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JGE");
@@ -888,7 +893,7 @@ CS			"CS"|"cs"
 
 {JL}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JL");
@@ -899,7 +904,7 @@ CS			"CS"|"cs"
 
 {JLE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JLE");
@@ -910,7 +915,7 @@ CS			"CS"|"cs"
 
 {JMP}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JMP");
@@ -921,7 +926,7 @@ CS			"CS"|"cs"
 
 {JNA}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNA");
@@ -932,7 +937,7 @@ CS			"CS"|"cs"
 
 {JNAE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"JNAE");
@@ -943,7 +948,7 @@ CS			"CS"|"cs"
 
 {JNB}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNB");
@@ -954,7 +959,7 @@ CS			"CS"|"cs"
 
 {JNBE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"JNBE");
@@ -965,7 +970,7 @@ CS			"CS"|"cs"
 
 {JNC}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNC");
@@ -976,7 +981,7 @@ CS			"CS"|"cs"
 
 {JNE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNE");
@@ -987,7 +992,7 @@ CS			"CS"|"cs"
 
 {JNG}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNG");
@@ -998,7 +1003,7 @@ CS			"CS"|"cs"
 
 {JNGE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"JNGE");
@@ -1009,7 +1014,7 @@ CS			"CS"|"cs"
 
 {JNL}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNL");
@@ -1020,7 +1025,7 @@ CS			"CS"|"cs"
 
 {JNLE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"JNLE");
@@ -1031,7 +1036,7 @@ CS			"CS"|"cs"
 
 {JNO}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNO");
@@ -1042,7 +1047,7 @@ CS			"CS"|"cs"
 
 {JNP}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNP");
@@ -1053,7 +1058,7 @@ CS			"CS"|"cs"
 
 {JNS}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNS");
@@ -1064,7 +1069,7 @@ CS			"CS"|"cs"
 
 {JNZ}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JNZ");
@@ -1075,7 +1080,7 @@ CS			"CS"|"cs"
 
 {JO}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JO");
@@ -1086,7 +1091,7 @@ CS			"CS"|"cs"
 
 {JP}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JP");
@@ -1097,7 +1102,7 @@ CS			"CS"|"cs"
 
 {JPE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JPE");
@@ -1108,7 +1113,7 @@ CS			"CS"|"cs"
 
 {JPO}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"JPO");
@@ -1119,7 +1124,7 @@ CS			"CS"|"cs"
 
 {JS}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JS");
@@ -1130,7 +1135,7 @@ CS			"CS"|"cs"
 
 {JZ}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"JZ");
@@ -1151,8 +1156,8 @@ CS			"CS"|"cs"
 
 {LDS}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"LDS");
@@ -1163,8 +1168,8 @@ CS			"CS"|"cs"
 
 {LEA}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"LEA");
@@ -1175,8 +1180,8 @@ CS			"CS"|"cs"
 
 {LES}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"LES");
@@ -1207,7 +1212,7 @@ CS			"CS"|"cs"
 
 {LOOP}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"LOOP");
@@ -1218,7 +1223,7 @@ CS			"CS"|"cs"
 
 {LOOPE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(5 * sizeof(char));
 											strcpy(instrString,"LOOPE");
@@ -1229,7 +1234,7 @@ CS			"CS"|"cs"
 
 {LOOPNE}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(6 * sizeof(char));
 											strcpy(instrString,"LOOPNE");
@@ -1240,7 +1245,7 @@ CS			"CS"|"cs"
 
 {LOOPNZ}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(6 * sizeof(char));
 											strcpy(instrString,"LOOPNZ");
@@ -1251,7 +1256,7 @@ CS			"CS"|"cs"
 
 {LOOPZ}[ /t]+{label}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(5 * sizeof(char));
 											strcpy(instrString,"LOOPZ");
@@ -1262,8 +1267,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1274,8 +1279,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1286,8 +1291,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1298,8 +1303,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1310,8 +1315,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1322,8 +1327,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{SREG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1334,8 +1339,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{memory}[ /t]*","[ /t]*{SREG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1346,8 +1351,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{REG}[ /t]*","[ /t]*{SREG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1358,8 +1363,8 @@ CS			"CS"|"cs"
 
 {MOV}[ /t]+{SREG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MOV");
@@ -1390,7 +1395,7 @@ CS			"CS"|"cs"
 
 {MUL}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MUL");
@@ -1401,7 +1406,7 @@ CS			"CS"|"cs"
 
 {MUL}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"MUL");
@@ -1412,7 +1417,7 @@ CS			"CS"|"cs"
 
 {NEG}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"NEG");
@@ -1423,7 +1428,7 @@ CS			"CS"|"cs"
 
 {NEG}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"NEG");
@@ -1444,7 +1449,7 @@ CS			"CS"|"cs"
 
 {NOT}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"NOT");
@@ -1455,7 +1460,7 @@ CS			"CS"|"cs"
 
 {NOT}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"NOT");
@@ -1466,8 +1471,8 @@ CS			"CS"|"cs"
 
 {OR}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"OR");
@@ -1478,8 +1483,8 @@ CS			"CS"|"cs"
 
 {OR}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"OR");
@@ -1490,8 +1495,8 @@ CS			"CS"|"cs"
 
 {OR}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"OR");
@@ -1502,8 +1507,8 @@ CS			"CS"|"cs"
 
 {OR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"OR");
@@ -1514,8 +1519,8 @@ CS			"CS"|"cs"
 
 {OR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(2 * sizeof(char));
 											strcpy(instrString,"OR");
@@ -1526,8 +1531,8 @@ CS			"CS"|"cs"
 
 {OUT}[ /t]+{immediate}[ /t]*","[ /t]*{AL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new NumericValue(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"OUT");
@@ -1538,8 +1543,8 @@ CS			"CS"|"cs"
 
 {OUT}[ /t]+{immediate}[ /t]*","[ /t]*{AX}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new NumericValue(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"OUT");
@@ -1550,8 +1555,8 @@ CS			"CS"|"cs"
 
 {OUT}[ /t]+{DX}[ /t]*","[ /t]*{AL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"OUT");
@@ -1562,8 +1567,8 @@ CS			"CS"|"cs"
 
 {OUT}[ /t]+{DX}[ /t]*","[ /t]*{AX}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"OUT");
@@ -1574,7 +1579,7 @@ CS			"CS"|"cs"
 
 {POP}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"POP");
@@ -1585,7 +1590,7 @@ CS			"CS"|"cs"
 
 {POP}[ /t]+{SREG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"POP");
@@ -1596,7 +1601,7 @@ CS			"CS"|"cs"
 
 {POP}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"POP");
@@ -1627,7 +1632,7 @@ CS			"CS"|"cs"
 
 {PUSH}[ /t]+{REG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"PUSH");
@@ -1638,7 +1643,7 @@ CS			"CS"|"cs"
 
 {PUSH}[ /t]+{SREG}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new Registry(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"PUSH");
@@ -1649,7 +1654,7 @@ CS			"CS"|"cs"
 
 {PUSH}[ /t]+{memory}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"PUSH");
@@ -1660,7 +1665,7 @@ CS			"CS"|"cs"
 
 {PUSH}[ /t]+{immediate}	{
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
+											args[0] = new NumericValue(extractArgument(yytext,1));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"PUSH");
@@ -1691,20 +1696,8 @@ CS			"CS"|"cs"
 
 {RCL}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
-											
-											char* instrString = (char *) malloc(3 * sizeof(char));
-											strcpy(instrString,"RCL");
-											Instruction* instruction = new Instruction(instrString,instructionCounter++,2,args);
-											
-											currentInstructionReader->addInstruction(instruction);
-										}
-
-{RCL}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
-											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCL");
@@ -1715,8 +1708,20 @@ CS			"CS"|"cs"
 
 {RCL}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
+											
+											char* instrString = (char *) malloc(3 * sizeof(char));
+											strcpy(instrString,"RCL");
+											Instruction* instruction = new Instruction(instrString,instructionCounter++,2,args);
+											
+											currentInstructionReader->addInstruction(instruction);
+										}
+
+{RCL}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
+											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCL");
@@ -1727,8 +1732,8 @@ CS			"CS"|"cs"
 
 {RCL}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCL");
@@ -1739,8 +1744,8 @@ CS			"CS"|"cs"
 
 {RCR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCR");
@@ -1751,8 +1756,8 @@ CS			"CS"|"cs"
 
 {RCR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCR");
@@ -1763,8 +1768,8 @@ CS			"CS"|"cs"
 
 {RCR}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCR");
@@ -1775,8 +1780,8 @@ CS			"CS"|"cs"
 
 {RCR}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"RCR");
@@ -1857,8 +1862,8 @@ CS			"CS"|"cs"
 
 {ROL}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROL");
@@ -1869,8 +1874,8 @@ CS			"CS"|"cs"
 
 {ROL}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROL");
@@ -1881,8 +1886,8 @@ CS			"CS"|"cs"
 
 {ROL}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROL");
@@ -1893,8 +1898,8 @@ CS			"CS"|"cs"
 
 {ROL}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROL");
@@ -1905,8 +1910,8 @@ CS			"CS"|"cs"
 
 {ROR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROR");
@@ -1917,8 +1922,8 @@ CS			"CS"|"cs"
 
 {ROR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROR");
@@ -1929,8 +1934,8 @@ CS			"CS"|"cs"
 
 {ROR}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROR");
@@ -1941,8 +1946,8 @@ CS			"CS"|"cs"
 
 {ROR}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"ROR");
@@ -1963,8 +1968,8 @@ CS			"CS"|"cs"
 
 {SAL}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAL");
@@ -1975,8 +1980,8 @@ CS			"CS"|"cs"
 
 {SAL}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAL");
@@ -1987,8 +1992,8 @@ CS			"CS"|"cs"
 
 {SAL}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAL");
@@ -1999,8 +2004,8 @@ CS			"CS"|"cs"
 
 {SAL}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAL");
@@ -2011,8 +2016,8 @@ CS			"CS"|"cs"
 
 {SAR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAR");
@@ -2023,8 +2028,8 @@ CS			"CS"|"cs"
 
 {SAR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAR");
@@ -2035,8 +2040,8 @@ CS			"CS"|"cs"
 
 {SAR}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAR");
@@ -2047,8 +2052,8 @@ CS			"CS"|"cs"
 
 {SAR}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SAR");
@@ -2059,8 +2064,8 @@ CS			"CS"|"cs"
 
 {SBB}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SBB");
@@ -2071,8 +2076,8 @@ CS			"CS"|"cs"
 
 {SBB}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SBB");
@@ -2083,8 +2088,8 @@ CS			"CS"|"cs"
 
 {SBB}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SBB");
@@ -2095,8 +2100,8 @@ CS			"CS"|"cs"
 
 {SBB}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SBB");
@@ -2107,8 +2112,8 @@ CS			"CS"|"cs"
 
 {SBB}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SBB");
@@ -2139,8 +2144,8 @@ CS			"CS"|"cs"
 
 {SHL}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHL");
@@ -2151,8 +2156,8 @@ CS			"CS"|"cs"
 
 {SHL}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHL");
@@ -2163,8 +2168,8 @@ CS			"CS"|"cs"
 
 {SHL}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHL");
@@ -2175,8 +2180,8 @@ CS			"CS"|"cs"
 
 {SHL}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHL");
@@ -2187,8 +2192,8 @@ CS			"CS"|"cs"
 
 {SHR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHR");
@@ -2199,8 +2204,8 @@ CS			"CS"|"cs"
 
 {SHR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHR");
@@ -2211,8 +2216,8 @@ CS			"CS"|"cs"
 
 {SHR}[ /t]+{memory}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHR");
@@ -2223,8 +2228,8 @@ CS			"CS"|"cs"
 
 {SHR}[ /t]+{REG}[ /t]*","[ /t]*{CL}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SHR");
@@ -2285,8 +2290,8 @@ CS			"CS"|"cs"
 
 {SUB}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SUB");
@@ -2297,8 +2302,8 @@ CS			"CS"|"cs"
 
 {SUB}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SUB");
@@ -2309,8 +2314,8 @@ CS			"CS"|"cs"
 
 {SUB}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SUB");
@@ -2321,8 +2326,8 @@ CS			"CS"|"cs"
 
 {SUB}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SUB");
@@ -2333,8 +2338,8 @@ CS			"CS"|"cs"
 
 {SUB}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"SUB");
@@ -2345,8 +2350,8 @@ CS			"CS"|"cs"
 
 {TEST}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"TEST");
@@ -2357,8 +2362,8 @@ CS			"CS"|"cs"
 
 {TEST}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"TEST");
@@ -2369,8 +2374,8 @@ CS			"CS"|"cs"
 
 {TEST}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"TEST");
@@ -2381,8 +2386,8 @@ CS			"CS"|"cs"
 
 {TEST}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"TEST");
@@ -2393,8 +2398,8 @@ CS			"CS"|"cs"
 
 {TEST}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"TEST");
@@ -2405,8 +2410,8 @@ CS			"CS"|"cs"
 
 {XCHG}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"XCHG");
@@ -2417,8 +2422,8 @@ CS			"CS"|"cs"
 
 {XCHG}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"XCHG");
@@ -2429,8 +2434,8 @@ CS			"CS"|"cs"
 
 {XCHG}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(4 * sizeof(char));
 											strcpy(instrString,"XCHG");
@@ -2451,8 +2456,8 @@ CS			"CS"|"cs"
 
 {XOR}[ /t]+{REG}[ /t]*","[ /t]*{memory}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new MemoryAddress(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"XOR");
@@ -2463,8 +2468,8 @@ CS			"CS"|"cs"
 
 {XOR}[ /t]+{memory}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"XOR");
@@ -2475,8 +2480,8 @@ CS			"CS"|"cs"
 
 {XOR}[ /t]+{REG}[ /t]*","[ /t]*{REG}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new Registry(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"XOR");
@@ -2487,8 +2492,8 @@ CS			"CS"|"cs"
 
 {XOR}[ /t]+{memory}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new MemoryAddress(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"XOR");
@@ -2499,8 +2504,8 @@ CS			"CS"|"cs"
 
 {XOR}[ /t]+{REG}[ /t]*","[ /t]*{immediate}	{
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
-											args[0] = new Operand(extractArgument(yytext,1));
-											args[1] = new Operand(extractArgument(yytext,2));
+											args[0] = new Registry(extractArgument(yytext,1));
+											args[1] = new NumericValue(extractArgument(yytext,2));
 											
 											char* instrString = (char *) malloc(3 * sizeof(char));
 											strcpy(instrString,"XOR");

@@ -3,7 +3,7 @@
 
 class NumericValue: public Operand{
 public:
-	NumericValue(char* expression, int value);
+	NumericValue(char* expression);
 	int getValue();
 	
 private:
