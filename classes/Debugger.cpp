@@ -49,7 +49,9 @@ Debugger::Debugger(char* fileName){
 	logger = new Logger((char*)"logs");
 	InstructionReader* reader = new InstructionReader(fileName, logger);
 	instructions = reader->getListOfInstructions();
-	//instructionNo = reader->getNumberOfInstructions();
+	instructionNo = reader->getNumberOfInstructions();
+	if(instructionNo <= 0)
+	  logger->log(new Message("Number of instructions is equal or less than zero"), WARNING);
 	delete reader;
 	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
 	gui = new GraphicSystem(processor, logger);

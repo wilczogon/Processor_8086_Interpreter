@@ -29,8 +29,10 @@ int Processor_8086::nextStep(){
 }
 
 bool Processor_8086::execute(Instruction* instruction){
-	if(instruction == NULL)
+	if(instruction == NULL){
+	  printf("Instruction is null");
 	  return false;
+	}
 	
 	char* msg = (char*)malloc(200*sizeof(char));
 
