@@ -186,6 +186,12 @@ CS			"CS"|"cs"
 
 %%
 
+
+
+"end"[ /t]+{label}[ /t/n]+			{
+	
+}
+
 {label}[ /t]+":"[ /t/n]+	{
 								//marker
 								currentInstructionReader->addLabel(yytext);
@@ -2514,8 +2520,12 @@ CS			"CS"|"cs"
 											currentInstructionReader->addInstruction(instruction);
 										}
 
-%%
+[ /t/n]+								{
+	
+}
 
+%%
+//todo
 #include <stdio.h>
 #include <stdlib.h>
 #include "../headers/InstructionReader.hpp"
@@ -2523,7 +2533,7 @@ CS			"CS"|"cs"
 
 
 Instruction** InstructionReader::getListOfInstructions(){
-	Instruction** instructions = (Instruction**)malloc(2*sizeof(Instruction*));
+	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
 	copy(instructionList->begin(),instructionList->end(),*instructions);;
 	return instructions;
 }
