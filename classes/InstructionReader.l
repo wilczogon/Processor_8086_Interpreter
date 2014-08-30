@@ -2524,9 +2524,6 @@ CS			"CS"|"cs"
 											currentInstructionReader->addInstruction(instruction);
 										}
 
-[ /t/n]+								{
-	
-}
 
 %%
 //todo
@@ -2548,6 +2545,7 @@ int InstructionReader::getNumberOfInstructions(){
 
 void InstructionReader::readInstructions(){
 	instructionCounter = 0;
+	currentInstructionReader = this;
 	yylex();
 }
 
