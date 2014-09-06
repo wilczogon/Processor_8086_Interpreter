@@ -3,8 +3,8 @@
 %{
 #include "../headers/InstructionReader.hpp"
 	
-static inline bool isWhiteSpace(char* ptr){
-	return *ptr == ' ' || *ptr == '\t' || *ptr == ',' || *ptr == 0;
+static inline bool isWhiteSpace(char ptr){
+	return ptr == ' ' || ptr == '\t' || ptr == ',' || ptr == 0;
 }
 	
 static inline char* extractArgument(char* lineptr, int argnr){
@@ -12,17 +12,17 @@ static inline char* extractArgument(char* lineptr, int argnr){
 	int len;
 	int ii, cc;
 	for(ii = 0; ii < argnr; ii++){
-		while(isWhiteSpace(lineptr+cc))
-			cc++;
-		temp = lineptr+cc;
-		while(!isWhiteSpace(lineptr+cc)){
-			if(*(lineptr+cc) == '['){
-				while(*(lineptr+cc) != ']')
-					cc++;
+		while(isWhiteSpace(*(lineptr)))
+			lineptr++;
+		temp = lineptr;
+		while(!isWhiteSpace(*(lineptr))){
+			if(*(lineptr) == '['){
+				while(*(lineptr) != ']')
+					lineptr++;
 			}
-			cc++;
+			lineptr++;
 		}
-		len = (lineptr+cc) - temp;
+		len = (lineptr) - temp;
 	}
 	char* result = (char*) malloc(sizeof(char) * len);
 	strncpy(result,temp,len);
@@ -2537,11 +2537,11 @@ CS			"CS"|"cs"
 Instruction** InstructionReader::getListOfInstructions(){
 	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
 	//copy(instructionList->begin(),instructionList->end(), *instructions);
-	int i = 0;
-	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
-	  instructions[i] = &(*it);
-	  ++i;
-	 }
+//	int i = 0;
+//	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
+//	  instructions[i] = &(*it);
+//	  ++i;
+//	 }
 	
 	return instructions;
 }
