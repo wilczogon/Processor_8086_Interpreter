@@ -54,7 +54,7 @@ Debugger::Debugger(char* fileName){
 	if(instructionNo <= 0)
 	  logger->log(new Message((char*)"Number of instructions is equal or less than zero", WARNING));
 	delete reader;
-	processor = new Processor_8086(new Memory(10000, logger), 100, logger);
+	processor = new Processor_8086(new Memory(10000, logger), 0, logger);
 	gui = new GraphicSystem(processor, logger);
 	instructionTime = 1000;
 }

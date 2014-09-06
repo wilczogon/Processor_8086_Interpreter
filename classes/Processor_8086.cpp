@@ -25,7 +25,7 @@ Processor_8086::~Processor_8086(){
 }
 
 int Processor_8086::nextStep(){
-	return ++IP;
+	return IP++;
 }
 
 bool Processor_8086::execute(Instruction* instruction){
@@ -121,16 +121,16 @@ void Processor_8086::ADC(Operand* arg1, Operand* arg2){
     
   setValue(arg1, getValue(arg1) + getValue(arg2) + (flags & CARRY_FLAG != 0 ? 1: 0)); 
 }
-/*
-void Processor_8086::ADD(char* arg1, char* arg2){
+
+void Processor_8086::ADD(Operand* arg1, Operand* arg2){
 	setValue(arg1, getValue(arg1) + getValue(arg2));
 }
 
-void Processor_8086::AND(char* arg1, char* arg2){
+void Processor_8086::AND(Operand* arg1, Operand* arg2){
 	setValue(arg1, getValue(arg1) & getValue(arg2));
 }
 
-void Processor_8086::CLC(){
+/*void Processor_8086::CLC(){
 	flags = (flags & ~CARRY_FLAG);
 }
 

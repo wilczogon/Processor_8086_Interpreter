@@ -26,8 +26,8 @@ public:
 	void AAS();
 	
 	void ADC(Operand* arg1, Operand* arg2);
-	void ADD(char* arg1, char* arg2);
-	void AND(char* arg1, char* arg2);
+	void ADD(Operand* arg1, Operand* arg2);
+	void AND(Operand* arg1, Operand* arg2);
 	void CALL(char* arg);
 	void CBW();
 	void CLC();
