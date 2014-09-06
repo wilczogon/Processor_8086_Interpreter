@@ -22646,7 +22646,6 @@ Instruction** InstructionReader::getListOfInstructions(){
 	int i = 0;
 	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
 	  instructions[i] = &(*it);
-	  //std::cout<< *it;
 	  ++i;
 	 }
 	

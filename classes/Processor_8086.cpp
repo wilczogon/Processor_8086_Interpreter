@@ -30,7 +30,8 @@ int Processor_8086::nextStep(){
 
 bool Processor_8086::execute(Instruction* instruction){
 	if(instruction == NULL){
-	  printf("Instruction is null");
+	  printf("\n\nEnd of instructions.\n");
+	  logger->log(new Message((char*)"End of instructions.", NOTIFICATION));
 	  return false;
 	}
 	
