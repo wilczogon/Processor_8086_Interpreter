@@ -18,6 +18,7 @@ public:
 	void readInstructions();
 	void addLabel(char* label);
 	void addInstruction(Instruction* instruction);
+	map<string,int>* getMapOfLabels();
 
 	InstructionReader(char* fileName, Logger* logger);
 
@@ -26,6 +27,7 @@ private:
 	list<Instruction>* instructionList;
 	list<string>* labelList;
 	list<int>* labelAddressList;
+	map<string,int>* labelMap;
 };
 
 #endif

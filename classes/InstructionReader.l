@@ -2561,12 +2561,15 @@ void InstructionReader::addInstruction(Instruction* instruction){
 }
 
 void InstructionReader::addLabel(char* text){
-	string* temp = new string(text);
+	const string* temp = new string(text);
 	InstructionReader::labelList->push_back(*temp);
-	delete temp;
 	InstructionReader::labelAddressList->push_back(instructionCounter);
-	
-	//labelMap->insert( std::pair<string,int>(*(new string(text)),instructionCounter) );
+	labelMap->insert( std::pair<string,int>(*temp,instructionCounter) );
+	delete temp;
+}
+
+map<string,int>* InstructionReader::getMapOfLabels(){
+	return labelMap;
 }
 
 InstructionReader::InstructionReader(char* fileName, Logger* logger){
@@ -2574,5 +2577,6 @@ InstructionReader::InstructionReader(char* fileName, Logger* logger){
 	InstructionReader::instructionList = new list<Instruction>();
 	InstructionReader::labelList = new list<string>();
 	InstructionReader::labelAddressList = new list<int>();
+	InstructionReader::labelMap = new map<string,int>();
 	yyin = fopen( fileName, "r" );
 }
