@@ -11,13 +11,14 @@ class Debugger{
 public:
 	bool step();
 	void run();
-	void start();
+	void start(string);
 	//void break...
 	//void continue();
 	void setInstructionTime(int milis);
 	void showInstructionTime();
 	//void showMemoryView();
 	//void showErrorView();
+	int getAdressByLabel(string label);
 	Debugger(char* fileName);
 	Debugger(char* fileName, bool isVisualized);
 	~Debugger();
@@ -30,6 +31,7 @@ private:
 	Logger* logger;
 	GraphicSystem* gui;
 	int instructionNo;
+	map<string,int>* labelMap;
 };
 
 #endif

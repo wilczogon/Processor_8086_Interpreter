@@ -3,13 +3,15 @@
 #include <unistd.h>
 #include "../headers/Debugger.hpp"
 #include "../headers/GraphicSystem.hpp"
+#include <map>
+#include <iterator>
 
 bool Debugger::step(){
 	return processor->execute(getInstruction(processor->nextStep()));
 }
 
 void Debugger::run(){
-	start();
+	start(string("start"));
 	gui->paintStandardView();
 	usleep(instructionTime);
 	while(step()){
@@ -18,8 +20,9 @@ void Debugger::run(){
 	}
 }
 
-void Debugger::start(/*adres startowy?*/){
-	//ustaw na poczatku czy co?
+void Debugger::start(string label){
+      printf("start: %d\n", getAdressByLabel(label));	//TODO
+      processor->setIP(getAdressByLabel(label));
 }
 
 //void break...
@@ -36,6 +39,16 @@ void Debugger::showInstructionTime(){
 //void showMemoryView();
 //void showErrorView();
 
+int Debugger::getAdressByLabel(string label){
+  int i;
+  printf("size: %d\n", labelMap->size());	//TODO
+  map<string,int>::iterator it = labelMap->find(label);
+  if(it == labelMap->end())
+    return -1;
+  else return it->second;
+  
+}
+
 Instruction* Debugger::getInstruction(int address){
 	int i;
 	for(i = 0; i< instructionNo; ++i)
@@ -51,6 +64,7 @@ Debugger::Debugger(char* fileName){
 	reader->readInstructions();
 	instructions = reader->getListOfInstructions();
 	instructionNo = reader->getNumberOfInstructions();
+	labelMap = reader->getMapOfLabels();
 	if(instructionNo <= 0)
 	  logger->log(new Message((char*)"Number of instructions is equal or less than zero", WARNING));
 	delete reader;

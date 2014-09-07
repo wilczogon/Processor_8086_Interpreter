@@ -227,6 +227,10 @@ void Processor_8086::DIV(char* arg){
 	  }
 	}
 	
+	void Processor_8086::setIP(int ip){
+	  IP = ip;
+	}
+	
 	int Processor_8086::getRegistryValue(const char* arg){
 		if(strcmp(arg, "AX") == 0)
 		  return AH<<8 + AL;

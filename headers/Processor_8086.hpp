@@ -143,6 +143,7 @@ public:
 	
 	int getValue(Operand* arg);
 	int getRegistryValue(const char* arg);
+	void setIP(int);
 	
 private:
 	
