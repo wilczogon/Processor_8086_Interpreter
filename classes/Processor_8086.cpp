@@ -43,6 +43,17 @@ bool Processor_8086::execute(Instruction* instruction){
 				instruction->getArgument(0)->getExpression(),
 				instruction->getArgument(1)->getExpression());
 			
+			if(strcmp(instruction->getName(), "ADC") == 0)
+			  ADC(instruction->getArgument(0), instruction->getArgument(1));
+			else if(strcmp(instruction->getName(), "ADD") == 0)
+			  ADD(instruction->getArgument(0), instruction->getArgument(1));
+			else if(strcmp(instruction->getName(), "AND") == 0)
+			  AND(instruction->getArgument(0), instruction->getArgument(1));
+			//else if(strcmp(instruction->getName(), "AAS") == 0)
+			  //AAS();
+			else
+			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
+			
 			logger->log(new Message(msg, NOTIFICATION));
 			
 		} else if(instruction->getNumberOfArguments() == 1){
