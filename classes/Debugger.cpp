@@ -41,7 +41,7 @@ void Debugger::showInstructionTime(){
 
 int Debugger::getAdressByLabel(string label){
   int i;
-  printf("size: %d\n", labelMap->size());	//TODO
+  printf("size: %d\n", (int)labelMap->size());	//TODO
   map<string,int>::iterator it = labelMap->find(label);
   if(it == labelMap->end())
     return -1;

@@ -25,8 +25,6 @@ public:
 private:
 	Logger* logger;
 	list<Instruction>* instructionList;
-	list<string>* labelList;
-	list<int>* labelAddressList;
 	map<string,int>* labelMap;
 };
 
