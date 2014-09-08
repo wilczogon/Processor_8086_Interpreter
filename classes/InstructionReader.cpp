@@ -15791,24 +15791,28 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 195 "classes/InstructionReader.l"
-{printf((char*)yytext);printf("\nkoniec\n");}
+{printf((char*)yytext);}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
 #line 197 "classes/InstructionReader.l"
-{printf((char*)yytext);printf("\nkomentarz\n");}
+{printf((char*)yytext);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 199 "classes/InstructionReader.l"
-{printf((char*)yytext);printf("\npoczątek\n");
-		currentInstructionReader->addLabel(yytext);
+{printf((char*)yytext);
+		  char* tmp = (char*)malloc(100);
+		  strcpy(tmp, yytext);
+		  tmp[strlen(tmp) - 1] = '\0';
+		currentInstructionReader->addLabel(tmp);
+		free(tmp);
 		}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 203 "classes/InstructionReader.l"
+#line 207 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -15821,7 +15825,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 213 "classes/InstructionReader.l"
+#line 217 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -15834,7 +15838,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 223 "classes/InstructionReader.l"
+#line 227 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -15847,7 +15851,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 233 "classes/InstructionReader.l"
+#line 237 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -15860,7 +15864,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 243 "classes/InstructionReader.l"
+#line 247 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -15875,7 +15879,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 255 "classes/InstructionReader.l"
+#line 259 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -15890,7 +15894,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 267 "classes/InstructionReader.l"
+#line 271 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -15905,7 +15909,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 279 "classes/InstructionReader.l"
+#line 283 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -15920,7 +15924,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 291 "classes/InstructionReader.l"
+#line 295 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -15935,7 +15939,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 303 "classes/InstructionReader.l"
+#line 307 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -15950,7 +15954,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 315 "classes/InstructionReader.l"
+#line 319 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -15965,7 +15969,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 327 "classes/InstructionReader.l"
+#line 331 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -15980,7 +15984,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 339 "classes/InstructionReader.l"
+#line 343 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -15995,7 +15999,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 351 "classes/InstructionReader.l"
+#line 355 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16010,7 +16014,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 363 "classes/InstructionReader.l"
+#line 367 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16025,7 +16029,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 375 "classes/InstructionReader.l"
+#line 379 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16040,7 +16044,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 387 "classes/InstructionReader.l"
+#line 391 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16055,7 +16059,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 399 "classes/InstructionReader.l"
+#line 403 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16070,7 +16074,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 411 "classes/InstructionReader.l"
+#line 415 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16085,7 +16089,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 423 "classes/InstructionReader.l"
+#line 427 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16099,7 +16103,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 434 "classes/InstructionReader.l"
+#line 438 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16113,7 +16117,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 445 "classes/InstructionReader.l"
+#line 449 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16126,7 +16130,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 455 "classes/InstructionReader.l"
+#line 459 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16139,7 +16143,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 465 "classes/InstructionReader.l"
+#line 469 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16152,7 +16156,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 475 "classes/InstructionReader.l"
+#line 479 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16165,7 +16169,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 485 "classes/InstructionReader.l"
+#line 489 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16178,7 +16182,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 495 "classes/InstructionReader.l"
+#line 499 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16193,7 +16197,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 507 "classes/InstructionReader.l"
+#line 511 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16208,7 +16212,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 519 "classes/InstructionReader.l"
+#line 523 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16223,7 +16227,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 531 "classes/InstructionReader.l"
+#line 535 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16238,7 +16242,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 543 "classes/InstructionReader.l"
+#line 547 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16253,7 +16257,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 555 "classes/InstructionReader.l"
+#line 559 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16266,7 +16270,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 565 "classes/InstructionReader.l"
+#line 569 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16279,7 +16283,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 575 "classes/InstructionReader.l"
+#line 579 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16292,7 +16296,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 585 "classes/InstructionReader.l"
+#line 589 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16305,7 +16309,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 595 "classes/InstructionReader.l"
+#line 599 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16318,7 +16322,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 605 "classes/InstructionReader.l"
+#line 609 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16332,7 +16336,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 616 "classes/InstructionReader.l"
+#line 620 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16346,7 +16350,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 627 "classes/InstructionReader.l"
+#line 631 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16360,7 +16364,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 638 "classes/InstructionReader.l"
+#line 642 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16374,7 +16378,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 649 "classes/InstructionReader.l"
+#line 653 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16387,7 +16391,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 659 "classes/InstructionReader.l"
+#line 663 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16401,7 +16405,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 670 "classes/InstructionReader.l"
+#line 674 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16415,7 +16419,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 681 "classes/InstructionReader.l"
+#line 685 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16429,7 +16433,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 692 "classes/InstructionReader.l"
+#line 696 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16443,7 +16447,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 703 "classes/InstructionReader.l"
+#line 707 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16458,7 +16462,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 715 "classes/InstructionReader.l"
+#line 719 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16473,7 +16477,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 727 "classes/InstructionReader.l"
+#line 731 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16488,7 +16492,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 739 "classes/InstructionReader.l"
+#line 743 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16503,7 +16507,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 751 "classes/InstructionReader.l"
+#line 755 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -16517,7 +16521,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 762 "classes/InstructionReader.l"
+#line 766 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16531,7 +16535,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 773 "classes/InstructionReader.l"
+#line 777 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new NumericValue(extractArgument(yytext,1));
@@ -16545,7 +16549,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 784 "classes/InstructionReader.l"
+#line 788 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16558,7 +16562,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 794 "classes/InstructionReader.l"
+#line 798 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -16571,7 +16575,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 804 "classes/InstructionReader.l"
+#line 808 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16585,7 +16589,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 815 "classes/InstructionReader.l"
+#line 819 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16599,7 +16603,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 826 "classes/InstructionReader.l"
+#line 830 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16613,7 +16617,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 837 "classes/InstructionReader.l"
+#line 841 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16627,7 +16631,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 848 "classes/InstructionReader.l"
+#line 852 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16641,7 +16645,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 859 "classes/InstructionReader.l"
+#line 863 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16655,7 +16659,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 870 "classes/InstructionReader.l"
+#line 874 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16669,7 +16673,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 881 "classes/InstructionReader.l"
+#line 885 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16683,7 +16687,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 892 "classes/InstructionReader.l"
+#line 896 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16697,7 +16701,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 903 "classes/InstructionReader.l"
+#line 907 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16711,7 +16715,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 914 "classes/InstructionReader.l"
+#line 918 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16725,7 +16729,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 925 "classes/InstructionReader.l"
+#line 929 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16739,7 +16743,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 936 "classes/InstructionReader.l"
+#line 940 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16753,7 +16757,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 947 "classes/InstructionReader.l"
+#line 951 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16767,7 +16771,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 958 "classes/InstructionReader.l"
+#line 962 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16781,7 +16785,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 969 "classes/InstructionReader.l"
+#line 973 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16795,7 +16799,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 980 "classes/InstructionReader.l"
+#line 984 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16809,7 +16813,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 991 "classes/InstructionReader.l"
+#line 995 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16823,7 +16827,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 1002 "classes/InstructionReader.l"
+#line 1006 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16837,7 +16841,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 1013 "classes/InstructionReader.l"
+#line 1017 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16851,7 +16855,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 1024 "classes/InstructionReader.l"
+#line 1028 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16865,7 +16869,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 1035 "classes/InstructionReader.l"
+#line 1039 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16879,7 +16883,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 1046 "classes/InstructionReader.l"
+#line 1050 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16893,7 +16897,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 1057 "classes/InstructionReader.l"
+#line 1061 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16907,7 +16911,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 1068 "classes/InstructionReader.l"
+#line 1072 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16921,7 +16925,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 1079 "classes/InstructionReader.l"
+#line 1083 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16935,7 +16939,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 1090 "classes/InstructionReader.l"
+#line 1094 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16949,7 +16953,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 1101 "classes/InstructionReader.l"
+#line 1105 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16963,7 +16967,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 1112 "classes/InstructionReader.l"
+#line 1116 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16977,7 +16981,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 1123 "classes/InstructionReader.l"
+#line 1127 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -16991,7 +16995,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 1134 "classes/InstructionReader.l"
+#line 1138 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17005,7 +17009,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 1145 "classes/InstructionReader.l"
+#line 1149 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17019,7 +17023,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 1156 "classes/InstructionReader.l"
+#line 1160 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17032,7 +17036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 1166 "classes/InstructionReader.l"
+#line 1170 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17047,7 +17051,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 1178 "classes/InstructionReader.l"
+#line 1182 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17062,7 +17066,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 1190 "classes/InstructionReader.l"
+#line 1194 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17077,7 +17081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 1202 "classes/InstructionReader.l"
+#line 1206 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17090,7 +17094,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 1212 "classes/InstructionReader.l"
+#line 1216 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17103,7 +17107,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 1222 "classes/InstructionReader.l"
+#line 1226 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17117,7 +17121,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 1233 "classes/InstructionReader.l"
+#line 1237 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17131,7 +17135,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 1244 "classes/InstructionReader.l"
+#line 1248 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17145,7 +17149,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 1255 "classes/InstructionReader.l"
+#line 1259 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17159,7 +17163,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 1266 "classes/InstructionReader.l"
+#line 1270 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17173,7 +17177,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 1277 "classes/InstructionReader.l"
+#line 1281 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17188,7 +17192,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 1289 "classes/InstructionReader.l"
+#line 1293 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17203,7 +17207,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 1301 "classes/InstructionReader.l"
+#line 1305 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17218,7 +17222,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 1313 "classes/InstructionReader.l"
+#line 1317 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17233,7 +17237,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 1325 "classes/InstructionReader.l"
+#line 1329 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17248,7 +17252,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 1337 "classes/InstructionReader.l"
+#line 1341 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17263,7 +17267,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 1349 "classes/InstructionReader.l"
+#line 1353 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17278,7 +17282,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 1361 "classes/InstructionReader.l"
+#line 1365 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17293,7 +17297,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 1373 "classes/InstructionReader.l"
+#line 1377 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17308,7 +17312,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 1385 "classes/InstructionReader.l"
+#line 1389 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17321,7 +17325,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 1395 "classes/InstructionReader.l"
+#line 1399 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17334,7 +17338,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 1405 "classes/InstructionReader.l"
+#line 1409 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17348,7 +17352,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 1416 "classes/InstructionReader.l"
+#line 1420 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17362,7 +17366,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 1427 "classes/InstructionReader.l"
+#line 1431 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17376,7 +17380,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 1438 "classes/InstructionReader.l"
+#line 1442 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17390,7 +17394,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 1449 "classes/InstructionReader.l"
+#line 1453 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17403,7 +17407,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 1459 "classes/InstructionReader.l"
+#line 1463 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17417,7 +17421,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 1470 "classes/InstructionReader.l"
+#line 1474 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17431,7 +17435,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 1481 "classes/InstructionReader.l"
+#line 1485 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17446,7 +17450,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 1493 "classes/InstructionReader.l"
+#line 1497 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17461,7 +17465,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 1505 "classes/InstructionReader.l"
+#line 1509 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17476,7 +17480,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 1517 "classes/InstructionReader.l"
+#line 1521 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17491,7 +17495,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 1529 "classes/InstructionReader.l"
+#line 1533 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17506,7 +17510,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 1541 "classes/InstructionReader.l"
+#line 1545 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new NumericValue(extractArgument(yytext,1));
@@ -17521,7 +17525,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 1553 "classes/InstructionReader.l"
+#line 1557 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new NumericValue(extractArgument(yytext,1));
@@ -17536,7 +17540,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 1565 "classes/InstructionReader.l"
+#line 1569 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17551,7 +17555,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 1577 "classes/InstructionReader.l"
+#line 1581 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17566,7 +17570,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 1589 "classes/InstructionReader.l"
+#line 1593 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17580,7 +17584,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 1600 "classes/InstructionReader.l"
+#line 1604 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17594,7 +17598,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 1611 "classes/InstructionReader.l"
+#line 1615 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17608,7 +17612,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 1622 "classes/InstructionReader.l"
+#line 1626 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17621,7 +17625,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 1632 "classes/InstructionReader.l"
+#line 1636 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17634,7 +17638,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 1642 "classes/InstructionReader.l"
+#line 1646 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17648,7 +17652,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 1653 "classes/InstructionReader.l"
+#line 1657 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17662,7 +17666,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 1664 "classes/InstructionReader.l"
+#line 1668 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17676,7 +17680,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 1675 "classes/InstructionReader.l"
+#line 1679 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(1 * sizeof(Operand*));
 											args[0] = new NumericValue(extractArgument(yytext,1));
@@ -17690,7 +17694,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 1686 "classes/InstructionReader.l"
+#line 1690 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17703,7 +17707,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 1696 "classes/InstructionReader.l"
+#line 1700 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17716,7 +17720,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 1706 "classes/InstructionReader.l"
+#line 1710 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17731,7 +17735,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 1718 "classes/InstructionReader.l"
+#line 1722 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17746,7 +17750,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 1730 "classes/InstructionReader.l"
+#line 1734 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17761,7 +17765,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 143:
 YY_RULE_SETUP
-#line 1742 "classes/InstructionReader.l"
+#line 1746 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17776,7 +17780,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 144:
 YY_RULE_SETUP
-#line 1754 "classes/InstructionReader.l"
+#line 1758 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17791,7 +17795,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 1766 "classes/InstructionReader.l"
+#line 1770 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17806,7 +17810,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 1778 "classes/InstructionReader.l"
+#line 1782 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17821,7 +17825,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 1790 "classes/InstructionReader.l"
+#line 1794 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17836,7 +17840,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 148:
 YY_RULE_SETUP
-#line 1802 "classes/InstructionReader.l"
+#line 1806 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17849,7 +17853,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 149:
 YY_RULE_SETUP
-#line 1812 "classes/InstructionReader.l"
+#line 1816 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17862,7 +17866,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 1822 "classes/InstructionReader.l"
+#line 1826 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17875,7 +17879,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 151:
 YY_RULE_SETUP
-#line 1832 "classes/InstructionReader.l"
+#line 1836 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17888,7 +17892,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 152:
 YY_RULE_SETUP
-#line 1842 "classes/InstructionReader.l"
+#line 1846 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17901,7 +17905,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 153:
 YY_RULE_SETUP
-#line 1852 "classes/InstructionReader.l"
+#line 1856 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17914,7 +17918,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 154:
 YY_RULE_SETUP
-#line 1862 "classes/InstructionReader.l"
+#line 1866 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -17927,7 +17931,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 155:
 YY_RULE_SETUP
-#line 1872 "classes/InstructionReader.l"
+#line 1876 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17942,7 +17946,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 156:
 YY_RULE_SETUP
-#line 1884 "classes/InstructionReader.l"
+#line 1888 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17957,7 +17961,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 157:
 YY_RULE_SETUP
-#line 1896 "classes/InstructionReader.l"
+#line 1900 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -17972,7 +17976,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 158:
 YY_RULE_SETUP
-#line 1908 "classes/InstructionReader.l"
+#line 1912 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -17987,7 +17991,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 159:
 YY_RULE_SETUP
-#line 1920 "classes/InstructionReader.l"
+#line 1924 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18002,7 +18006,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 160:
 YY_RULE_SETUP
-#line 1932 "classes/InstructionReader.l"
+#line 1936 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18017,7 +18021,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 161:
 YY_RULE_SETUP
-#line 1944 "classes/InstructionReader.l"
+#line 1948 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18032,7 +18036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 162:
 YY_RULE_SETUP
-#line 1956 "classes/InstructionReader.l"
+#line 1960 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18047,7 +18051,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 163:
 YY_RULE_SETUP
-#line 1968 "classes/InstructionReader.l"
+#line 1972 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18060,7 +18064,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 164:
 YY_RULE_SETUP
-#line 1978 "classes/InstructionReader.l"
+#line 1982 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18075,7 +18079,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 165:
 YY_RULE_SETUP
-#line 1990 "classes/InstructionReader.l"
+#line 1994 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18090,7 +18094,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 166:
 YY_RULE_SETUP
-#line 2002 "classes/InstructionReader.l"
+#line 2006 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18105,7 +18109,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 167:
 YY_RULE_SETUP
-#line 2014 "classes/InstructionReader.l"
+#line 2018 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18120,7 +18124,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 168:
 YY_RULE_SETUP
-#line 2026 "classes/InstructionReader.l"
+#line 2030 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18135,7 +18139,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 169:
 YY_RULE_SETUP
-#line 2038 "classes/InstructionReader.l"
+#line 2042 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18150,7 +18154,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 170:
 YY_RULE_SETUP
-#line 2050 "classes/InstructionReader.l"
+#line 2054 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18165,7 +18169,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 171:
 YY_RULE_SETUP
-#line 2062 "classes/InstructionReader.l"
+#line 2066 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18180,7 +18184,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 172:
 YY_RULE_SETUP
-#line 2074 "classes/InstructionReader.l"
+#line 2078 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18195,7 +18199,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 173:
 YY_RULE_SETUP
-#line 2086 "classes/InstructionReader.l"
+#line 2090 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18210,7 +18214,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 174:
 YY_RULE_SETUP
-#line 2098 "classes/InstructionReader.l"
+#line 2102 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18225,7 +18229,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 175:
 YY_RULE_SETUP
-#line 2110 "classes/InstructionReader.l"
+#line 2114 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18240,7 +18244,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 176:
 YY_RULE_SETUP
-#line 2122 "classes/InstructionReader.l"
+#line 2126 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18255,7 +18259,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 177:
 YY_RULE_SETUP
-#line 2134 "classes/InstructionReader.l"
+#line 2138 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18268,7 +18272,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 178:
 YY_RULE_SETUP
-#line 2144 "classes/InstructionReader.l"
+#line 2148 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18281,7 +18285,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 179:
 YY_RULE_SETUP
-#line 2154 "classes/InstructionReader.l"
+#line 2158 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18296,7 +18300,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 180:
 YY_RULE_SETUP
-#line 2166 "classes/InstructionReader.l"
+#line 2170 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18311,7 +18315,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 181:
 YY_RULE_SETUP
-#line 2178 "classes/InstructionReader.l"
+#line 2182 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18326,7 +18330,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 182:
 YY_RULE_SETUP
-#line 2190 "classes/InstructionReader.l"
+#line 2194 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18341,7 +18345,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 183:
 YY_RULE_SETUP
-#line 2202 "classes/InstructionReader.l"
+#line 2206 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18356,7 +18360,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 184:
 YY_RULE_SETUP
-#line 2214 "classes/InstructionReader.l"
+#line 2218 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18371,7 +18375,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 185:
 YY_RULE_SETUP
-#line 2226 "classes/InstructionReader.l"
+#line 2230 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18386,7 +18390,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 186:
 YY_RULE_SETUP
-#line 2238 "classes/InstructionReader.l"
+#line 2242 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18401,7 +18405,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 187:
 YY_RULE_SETUP
-#line 2250 "classes/InstructionReader.l"
+#line 2254 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18414,7 +18418,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 188:
 YY_RULE_SETUP
-#line 2260 "classes/InstructionReader.l"
+#line 2264 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18427,7 +18431,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 189:
 YY_RULE_SETUP
-#line 2270 "classes/InstructionReader.l"
+#line 2274 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18440,7 +18444,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 190:
 YY_RULE_SETUP
-#line 2280 "classes/InstructionReader.l"
+#line 2284 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18453,7 +18457,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 191:
 YY_RULE_SETUP
-#line 2290 "classes/InstructionReader.l"
+#line 2294 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18466,7 +18470,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 192:
 YY_RULE_SETUP
-#line 2300 "classes/InstructionReader.l"
+#line 2304 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18481,7 +18485,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 193:
 YY_RULE_SETUP
-#line 2312 "classes/InstructionReader.l"
+#line 2316 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18496,7 +18500,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 194:
 YY_RULE_SETUP
-#line 2324 "classes/InstructionReader.l"
+#line 2328 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18511,7 +18515,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 195:
 YY_RULE_SETUP
-#line 2336 "classes/InstructionReader.l"
+#line 2340 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18526,7 +18530,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 196:
 YY_RULE_SETUP
-#line 2348 "classes/InstructionReader.l"
+#line 2352 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18541,7 +18545,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 197:
 YY_RULE_SETUP
-#line 2360 "classes/InstructionReader.l"
+#line 2364 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18556,7 +18560,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 198:
 YY_RULE_SETUP
-#line 2372 "classes/InstructionReader.l"
+#line 2376 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18571,7 +18575,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 199:
 YY_RULE_SETUP
-#line 2384 "classes/InstructionReader.l"
+#line 2388 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18586,7 +18590,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 200:
 YY_RULE_SETUP
-#line 2396 "classes/InstructionReader.l"
+#line 2400 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18601,7 +18605,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 201:
 YY_RULE_SETUP
-#line 2408 "classes/InstructionReader.l"
+#line 2412 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18616,7 +18620,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 202:
 YY_RULE_SETUP
-#line 2420 "classes/InstructionReader.l"
+#line 2424 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18631,7 +18635,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 203:
 YY_RULE_SETUP
-#line 2432 "classes/InstructionReader.l"
+#line 2436 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18646,7 +18650,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 204:
 YY_RULE_SETUP
-#line 2444 "classes/InstructionReader.l"
+#line 2448 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18661,7 +18665,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 205:
 YY_RULE_SETUP
-#line 2456 "classes/InstructionReader.l"
+#line 2460 "classes/InstructionReader.l"
 {
 											Operand** args = NULL;
 											
@@ -18674,7 +18678,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 206:
 YY_RULE_SETUP
-#line 2466 "classes/InstructionReader.l"
+#line 2470 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18689,7 +18693,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 207:
 YY_RULE_SETUP
-#line 2478 "classes/InstructionReader.l"
+#line 2482 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18704,7 +18708,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 208:
 YY_RULE_SETUP
-#line 2490 "classes/InstructionReader.l"
+#line 2494 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18719,7 +18723,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 209:
 YY_RULE_SETUP
-#line 2502 "classes/InstructionReader.l"
+#line 2506 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new MemoryAddress(extractArgument(yytext,1));
@@ -18734,7 +18738,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 210:
 YY_RULE_SETUP
-#line 2514 "classes/InstructionReader.l"
+#line 2518 "classes/InstructionReader.l"
 {
 											Operand** args = (Operand**) malloc(2 * sizeof(Operand*));
 											args[0] = new Registry(extractArgument(yytext,1));
@@ -18749,15 +18753,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 211:
 YY_RULE_SETUP
-#line 2527 "classes/InstructionReader.l"
+#line 2531 "classes/InstructionReader.l"
 {printf("#");}
 	YY_BREAK
 case 212:
 YY_RULE_SETUP
-#line 2528 "classes/InstructionReader.l"
+#line 2532 "classes/InstructionReader.l"
 ECHO;
 	YY_BREAK
-#line 18761 "classes/InstructionReader.cpp"
+#line 18765 "classes/InstructionReader.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -19755,7 +19759,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 2528 "classes/InstructionReader.l"
+#line 2532 "classes/InstructionReader.l"
 
 
 //todo
@@ -19790,7 +19794,6 @@ void InstructionReader::readInstructions(){
 
 void InstructionReader::addInstruction(Instruction* instruction){
 	instructionList->push_back(*instruction);
-	printf("\ninstrukcja\n");
 }
 
 void InstructionReader::addLabel(char* text){

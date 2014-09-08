@@ -197,7 +197,11 @@ whitespace 		[ \t\n]
 ";"[^\n]*"\n"	{printf((char*)yytext);}
 
 {label}":"	{printf((char*)yytext);
-		currentInstructionReader->addLabel(yytext);
+		  char* tmp = (char*)malloc(100);
+		  strcpy(tmp, yytext);
+		  tmp[strlen(tmp) - 1] = '\0';
+		currentInstructionReader->addLabel(tmp);
+		free(tmp);
 		}
 
 {AAA}	{

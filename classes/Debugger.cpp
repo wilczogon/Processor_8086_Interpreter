@@ -21,7 +21,6 @@ void Debugger::run(){
 }
 
 void Debugger::start(string label){
-      printf("start: %d\n", getAdressByLabel(label));	//TODO
       processor->setIP(getAdressByLabel(label));
 }
 
@@ -40,20 +39,30 @@ void Debugger::showInstructionTime(){
 //void showErrorView();
 
 int Debugger::getAdressByLabel(string label){
-  int i;
-  printf("size: %d\n", (int)labelMap->size());	//TODO
-  map<string,int>::iterator it = labelMap->find(label);
-  if(it == labelMap->end())
-    return -1;
-  else return it->second;
+  
+  map<string,int>::iterator it;
+  for(it = labelMap->begin(); it != labelMap->end(); ++it)
+    if(it->first == label)
+      return it->second;
+    
+  return -1;
+  
+  //map<string,int>::iterator it = labelMap->find(label);
+  //if(it == labelMap->end())
+    //return -1;
+  //else return it->second;
   
 }
 
 Instruction* Debugger::getInstruction(int address){
 	int i;
 	for(i = 0; i< instructionNo; ++i)
-		if(instructions[i]->getAddress() == address)
-			return instructions[i];
+	    if(instructions[i] == NULL)
+	      logger->log(new Message((char*)"Instruction on list is NULL", ERROR));
+	    else{ 
+	      if(instructions[i]->getAddress() == address)
+		return instructions[i];
+	    }
 
 	return NULL;
 }
