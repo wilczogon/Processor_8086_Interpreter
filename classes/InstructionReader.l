@@ -2540,12 +2540,12 @@ whitespace 		[ \t\n]
 
 Instruction** InstructionReader::getListOfInstructions(){
 	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
-	//copy(instructionList->begin(),instructionList->end(), *instructions);
-//	int i = 0;
-//	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
-//	  instructions[i] = &(*it);
-//	  ++i;
-//	 }
+//	copy(instructionList->begin(),instructionList->end(), *instructions);
+	int i = 0;
+	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
+	  instructions[i] = &(*it);
+	  ++i;
+	 }
 	
 	return instructions;
 }
