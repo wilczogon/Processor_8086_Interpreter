@@ -7,16 +7,24 @@
 #include <iterator>
 
 bool Debugger::step(){
-	return processor->execute(getInstruction(processor->nextStep()));
+      Instruction* instruction = getInstruction(processor->nextStep());
+      
+      if(instruction == NULL)
+	return false;
+      
+      char* tmp = instruction->toCharArray();
+      printf("\n%s\n\n", tmp);
+      free(tmp);
+      return processor->execute(instruction);
 }
 
 void Debugger::run(){
 	start(string("start"));
 	gui->paintStandardView();
-	usleep(instructionTime);
+	usleep(1000*instructionTime);
 	while(step()){
 		gui->paintStandardView();
-		usleep(instructionTime);
+		usleep(1000*instructionTime);
 	}
 }
 

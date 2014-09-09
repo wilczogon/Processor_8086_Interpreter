@@ -19,6 +19,17 @@ int Instruction::getAddress(){
 	return address;
 }
 
+char* Instruction::toCharArray(){
+  char* tmp = (char*)malloc(100);
+  sprintf(tmp, "%s ", getName());
+  
+  int i;
+  for(i = 0; i<argsNo; ++i)
+    sprintf(tmp, "%s %s", tmp, getArgument(i)->getExpression());
+  
+  return tmp;
+}
+
 Instruction::Instruction(char* name, int address, int numberOfArgs, Operand** args){
 	this->name = strdup(name);
 	this->address = address;
