@@ -1,0 +1,48 @@
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+WARNING      : Number of instructions is equal or less than zero
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : End of instructions.
+NOTIFICATION : Processor_8086 turned off.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+NOTIFICATION : Memory initialized.
+NOTIFICATION : Processor_8086 started.
+ERROR        : Unknown instruction.
+NOTIFICATION : Instruction execution attemption: MOV mov ax.
+ERROR        : Unknown instruction.
+NOTIFICATION : Instruction execution attemption: MOV mov es.
+ERROR        : Unknown instruction.
+NOTIFICATION : Instruction execution attemption: MOV mov al.
+ERROR        : Unknown instruction.
+NOTIFICATION : Instruction execution attemption: MOV mov ah.
+NOTIFICATION : Instruction execution attemption: INT int.
+NOTIFICATION : End of instructions.
+NOTIFICATION : Processor_8086 turned off.
