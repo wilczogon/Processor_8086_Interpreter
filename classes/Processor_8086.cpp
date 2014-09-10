@@ -62,6 +62,11 @@ bool Processor_8086::execute(Instruction* instruction){
 			sprintf(msg, "Instruction execution attemption: %s %s.", instruction->getName(),
 				instruction->getArgument(0)->getExpression());
 			
+			if(strcmp(instruction->getName(), "CALL") == 0)
+			  CALL(instruction->getArgument(0));
+			else
+			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
+			
 			logger->log(new Message(msg, NOTIFICATION));
 			
 		} else if(instruction->getNumberOfArguments() == 0){
@@ -77,6 +82,14 @@ bool Processor_8086::execute(Instruction* instruction){
 			  AAM();
 			else if(strcmp(instruction->getName(), "AAS") == 0)
 			  AAS();
+			else if(strcmp(instruction->getName(), "CBW") == 0)
+			  CBW();
+			else if(strcmp(instruction->getName(), "CLC") == 0)
+			  CLC();
+			else if(strcmp(instruction->getName(), "CLD") == 0)
+			  CLD();
+			else if(strcmp(instruction->getName(), "CLI") == 0)
+			  CLI();
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 		}
@@ -143,7 +156,17 @@ void Processor_8086::AND(Operand* arg1, Operand* arg2){
 	setValue(arg1, getValue(arg1) & getValue(arg2));
 }
 
-/*void Processor_8086::CLC(){
+void Processor_8086::CALL(Operand* arg){
+  stack->push(IP);
+  IP = getValue(arg);
+  stack->pushJumpData();
+}
+
+void Processor_8086::CBW(){
+  // TODO
+}
+
+void Processor_8086::CLC(){
 	flags = (flags & ~CARRY_FLAG);
 }
 
@@ -154,7 +177,7 @@ void Processor_8086::CLI(){
 	flags = (flags & ~INTERRUPT_FLAG);
 }
 
-void Processor_8086::CMC(){
+/*void Processor_8086::CMC(){
 	if(flags & CARRY_FLAG)
 		CLC();
 	else
@@ -203,6 +226,11 @@ void Processor_8086::DIV(char* arg){
 
 	void Processor_8086::MOV(Operand* arg1, Operand* arg2){
 	  setValue(arg1, getValue(arg2));
+	}
+	
+	void Processor_8086::RET(){
+	  stack->popJumpData();
+	  IP = stack->pop();
 	}
 
 	int Processor_8086::getValue(Operand* arg){

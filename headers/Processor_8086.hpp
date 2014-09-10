@@ -28,7 +28,7 @@ public:
 	void ADC(Operand* arg1, Operand* arg2);
 	void ADD(Operand* arg1, Operand* arg2);
 	void AND(Operand* arg1, Operand* arg2);
-	void CALL(char* arg);
+	void CALL(Operand* arg);
 	void CBW();
 	void CLC();
 	void CLD();
