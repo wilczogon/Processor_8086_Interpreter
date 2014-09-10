@@ -15786,28 +15786,28 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 191 "classes/InstructionReader.l"
-{/*do nothing*/printf((char*)yytext);}
+{/*do nothing*/}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 195 "classes/InstructionReader.l"
-{printf((char*)yytext);}
+{}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
 #line 197 "classes/InstructionReader.l"
-{printf((char*)yytext);}
+{}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 199 "classes/InstructionReader.l"
-{printf((char*)yytext);
+{
 		  char* tmp = (char*)malloc(100);
 		  strcpy(tmp, yytext);
 		  tmp[strlen(tmp) - 1] = '\0';
-		currentInstructionReader->addLabel(tmp);
-		free(tmp);
+		  currentInstructionReader->addLabel(tmp);
+		  free(tmp);
 		}
 	YY_BREAK
 case 5:
@@ -18754,7 +18754,7 @@ YY_RULE_SETUP
 case 211:
 YY_RULE_SETUP
 #line 2531 "classes/InstructionReader.l"
-{printf("#");}
+{}
 	YY_BREAK
 case 212:
 YY_RULE_SETUP
@@ -19772,7 +19772,6 @@ void yyfree (void * ptr )
 
 Instruction** InstructionReader::getListOfInstructions(){
 	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
-//	copy(instructionList->begin(),instructionList->end(), *instructions);
 	int i = 0;
 	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
 	  instructions[i] = &(*it);

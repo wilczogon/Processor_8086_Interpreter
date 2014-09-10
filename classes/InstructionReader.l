@@ -188,20 +188,20 @@ whitespace 		[ \t\n]
 
 %%
 
-{whitespace}+	{/*do nothing*/printf((char*)yytext);}
+{whitespace}+	{/*do nothing*/}
 
 
 
-"end "{label}	{printf((char*)yytext);}
+"end "{label}	{}
 
-";"[^\n]*"\n"	{printf((char*)yytext);}
+";"[^\n]*"\n"	{}
 
-{label}":"	{printf((char*)yytext);
+{label}":"	{
 		  char* tmp = (char*)malloc(100);
 		  strcpy(tmp, yytext);
 		  tmp[strlen(tmp) - 1] = '\0';
-		currentInstructionReader->addLabel(tmp);
-		free(tmp);
+		  currentInstructionReader->addLabel(tmp);
+		  free(tmp);
 		}
 
 {AAA}	{
@@ -2528,7 +2528,7 @@ whitespace 		[ \t\n]
 										}
 
 
-.	{printf("#");}
+.	{}
 %%
 //todo
 #include <stdio.h>
@@ -2540,7 +2540,6 @@ whitespace 		[ \t\n]
 
 Instruction** InstructionReader::getListOfInstructions(){
 	Instruction** instructions = (Instruction**)malloc(instructionList->size()*sizeof(Instruction*));
-//	copy(instructionList->begin(),instructionList->end(), *instructions);
 	int i = 0;
 	for (list<Instruction>::iterator it=instructionList->begin(); it!=instructionList->end(); it++){
 	  instructions[i] = &(*it);
