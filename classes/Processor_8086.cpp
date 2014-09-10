@@ -239,13 +239,13 @@ void Processor_8086::DIV(char* arg){
 	
 	int Processor_8086::getRegistryValue(const char* arg){
 		if(strcmp(arg, "AX") == 0)
-		  return AH<<8 + AL;
+		  return AH*256 + AL;
 		else if(strcmp(arg, "BX") == 0)
-		  return BH<<8 + BL;
+		  return BH*256 + BL;
 		else if(strcmp(arg, "CX") == 0)
-		  return CH<<8 + CL;
+		  return CH*256 + CL;
 		else if(strcmp(arg, "DX") == 0)
-		  return DH<<8 + DL;
+		  return DH*256 + DL;
 		else if(strcmp(arg, "AL") == 0)
 			return AL;
 		else if(strcmp(arg, "BL") == 0)
@@ -275,17 +275,17 @@ void Processor_8086::DIV(char* arg){
 	
 	void Processor_8086::setRegistryValue(const char* arg, int value){
 		if(strcmp(arg, "AX") == 0){
-			  AL = value & 0x11111111;
-			  AH = value>>8;
+			  AL = value %256;
+			  AH = value/256;
 		}else if(strcmp(arg, "BX") == 0){
-			  BL = value & 0x11111111;
-			  BH = value>>8;
+			  BL = value %256;
+			  BH = value/256;
 		}else if(strcmp(arg, "CX") == 0){
-			  CL = value & 0x11111111;
-			  CH = value>>8;
+			  CL = value %256;
+			  CH = value/256;
 		}else if(strcmp(arg, "DX") == 0){
-			  DL = value & 0x11111111;
-			  DH = value>>8;
+			  DL = value %256;
+			  DH = value/256;
 		}else if(strcmp(arg, "AL") == 0)
 			AL = value;
 		else if(strcmp(arg, "BL") == 0)
