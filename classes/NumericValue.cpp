@@ -8,13 +8,13 @@ NumericValue::NumericValue(char* expression): Operand(expression){
 	int i;
 	int tmp = 0;
 	if(expression[strlen(expression) -1] == 'd'){
-	  for(i = strlen(expression)-2; i>=0; --i){
+	  for(i = 0; i<strlen(expression)-1; ++i){
 	    tmp *= 2;
 	    tmp += (expression[i] - '0');
 	  }
 	  this->value = tmp;
 	} else if(expression[strlen(expression) -1] == 'h'){
-	  for(i = strlen(expression)-2; i>=0; --i){
+	  for(i = 0; i<strlen(expression)-1; ++i){
 	    tmp *= 16;
 	    
 	    if(expression[i]>='a' && expression[i]<='f')
@@ -25,7 +25,6 @@ NumericValue::NumericValue(char* expression): Operand(expression){
 	    else
 	      tmp += expression[i] - '0';
 	  }
-	  printf("Value: %d\n\n", tmp);
 	  this->value = tmp;
 	} else
 	  this->value = atoi(expression);

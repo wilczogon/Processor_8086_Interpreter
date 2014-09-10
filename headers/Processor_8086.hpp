@@ -161,7 +161,7 @@ private:
 	const static int OVERFLOW_FLAG 	= 1<<11;
 	
 	// AX, BX, CX, DX
-	char AH, AL, BH, BL, CH, CL, DH, DL;
+	int AH, AL, BH, BL, CH, CL, DH, DL;
 	
 	// SI, DI, BP, SP - 16 bit
 	int SI;
