@@ -54,9 +54,9 @@ int Debugger::getAdressByLabel(string label){
   
   map<string,int>::iterator it;
   for(it = labelMap->begin(); it != labelMap->end(); ++it)
-    if(it->first == label)
+    if(it->first.compare(label) == 0)
       return it->second;
-    
+  
   return -1;
   
   //map<string,int>::iterator it = labelMap->find(label);
@@ -89,7 +89,7 @@ Debugger::Debugger(char* fileName){
 	if(instructionNo <= 0)
 	  logger->log(new Message((char*)"Number of instructions is equal or less than zero", WARNING));
 	delete reader;
-	processor = new Processor_8086(new Memory(10000, logger), 0, logger);
+	processor = new Processor_8086(labelMap, new Memory(10000, logger), 0, logger);
 	gui = new GraphicSystem(processor, logger);
 	instructionTime = 1000;
 }

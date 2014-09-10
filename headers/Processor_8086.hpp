@@ -6,13 +6,15 @@
 #include "Logger.hpp"
 #include "Instruction.hpp"
 #include "Operand.hpp"
+#include <map>
+#include <string>
 
 class Processor_8086{
 public:
 	
 	//Processor_8086();
 	
-	Processor_8086(Memory* memory, int offset, Logger* logger);
+	Processor_8086(std::map<std::string,int>* labelMap, Memory* memory, int offset, Logger* logger);
 	~Processor_8086();
 	
 	int nextStep();
@@ -178,6 +180,7 @@ private:
 	int flags;
 	int IP;
 	
+	std::map<std::string,int>* labelMap;
 	Stack* stack;
 	Memory* memory;
 	Logger* logger;

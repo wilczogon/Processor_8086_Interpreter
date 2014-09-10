@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <map>
+#include <string>
 #include "../headers/Processor_8086.hpp"
+#include "../headers/Debugger.hpp"
 #include "../headers/Memory.hpp"
 #include "../headers/Stack.hpp"
 #include "../headers/Logger.hpp"
@@ -11,7 +14,8 @@
 #include "../headers/MemoryAddress.hpp"
 #include "../headers/NumericValue.hpp"
 
-Processor_8086::Processor_8086(Memory* memory, int offset, Logger* logger){
+Processor_8086::Processor_8086(std::map<std::string,int>* labelMap, Memory* memory, int offset, Logger* logger){
+	this->labelMap = labelMap;
 	this->memory = memory;
 	this->stack = new Stack(1<<24, logger);
 	this->logger = logger;
@@ -160,7 +164,14 @@ void Processor_8086::AND(Operand* arg1, Operand* arg2){
 
 void Processor_8086::CALL(Operand* arg){
   stack->push(IP);
-  IP = getValue(arg);
+  
+  std::map<std::string,int>::iterator it;
+  for(it = labelMap->begin(); it != labelMap->end(); ++it)
+    if(it->first.compare(arg->getExpression()) == 0){
+      IP = it->second;
+      break;
+    }
+    
   stack->pushJumpData();
 }
 
