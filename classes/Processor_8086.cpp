@@ -345,14 +345,6 @@ bool Processor_8086::isWordRegistry(char* arg){
 	else
 		return false;
 }
-	
-bool Processor_8086::isValue(char* arg){
-	return false;
-}
-
-bool Processor_8086::isMemoryAddress(char* arg){
-	return false;
-}
 
 bool isLabel(char* arg){
 	return false;

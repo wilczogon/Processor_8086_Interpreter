@@ -18,6 +18,10 @@ bool Debugger::step(){
       return processor->execute(instruction);
 }
 
+void Debugger::paintStandardView(){
+  gui->paintStandardView();
+}
+
 void Debugger::run(){
 	start(string("start"));
 	gui->paintStandardView();
@@ -40,7 +44,7 @@ void Debugger::setInstructionTime(int milis){
 }
 
 void Debugger::showInstructionTime(){
-	printf("Czas wykonania pojedynczej operacji jest ustawiony na %d milisekund.\n", instructionTime);
+	printf("Instruction time is set to %d miliseconds.\n", instructionTime);
 }
 
 //void showMemoryView();

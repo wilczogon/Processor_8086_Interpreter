@@ -32,11 +32,23 @@ int main(int argc, char** args){
 		if(strcmp(input, "quit") == 0)
 			break;
 		else if(strcmp(input, "help") == 0){
-		  printf("Valid commands:\n---------------\n\trun\n\tstep\n\thelp\n\tquit\n");
+		  printf("Valid commands:\n---------------\n\trun\n\tstart\n\tstep\n\tinstrTime\n\tsetInstrTime\n\thelp\n\tquit\n");
 		} else if(strcmp(input, "run") == 0){
 		  debugger->run();
 		} else if(strcmp(input, "step") == 0){
-		  debugger->step();
+		  if(debugger->step())
+		    debugger->paintStandardView();
+		  else 
+		    printf("End of instructions.\n\n");
+		} else if(strcmp(input, "start") == 0){
+		  debugger->start("start");
+		} else if(strcmp(input, "instrTime") == 0){
+		  debugger->showInstructionTime();
+		} else if(strcmp(input, "setInstrTime") == 0){
+		  int time;
+		  printf("Provide new instruction time in miliseconds: ");
+		  scanf("%d", &time);
+		  debugger->setInstructionTime(time);
 		}
 
 		printf("\n");

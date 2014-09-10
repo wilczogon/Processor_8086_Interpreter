@@ -16,6 +16,7 @@ public:
 	//void continue();
 	void setInstructionTime(int milis);
 	void showInstructionTime();
+	void paintStandardView();
 	//void showMemoryView();
 	//void showErrorView();
 	int getAdressByLabel(string label);
