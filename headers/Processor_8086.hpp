@@ -36,7 +36,7 @@ public:
 	void CLD();
 	void CLI();
 	void CMC();
-	void CMP(char* arg1, char* arg2);
+	void CMP(Operand* arg1, Operand* arg2);
 	void CMPSB();
 	void CMPSW();
 	void CWD();
@@ -49,7 +49,7 @@ public:
 	void IDIV(char* arg);
 	void IMUL(char* arg);
 	void IN(char* arg1, char* arg2);
-	void INC(char* arg);
+	void INC(Operand* arg);
 	void INT(char* arg);
 	void INTO();
 	void IRET();
@@ -73,7 +73,7 @@ public:
 	void JZ(char* arg);
 	
 	void JCXZ(char* arg);
-	void JMP(char* arg);
+	void JMP(Operand* arg);
 	void LAHF();
 	void LDS(char* arg1, char* arg2);
 	void LEA(char* arg1, char* arg2);
@@ -96,10 +96,10 @@ public:
 	void OR(char* arg1, char* arg2);
 	void OUT(char* arg1, char* arg2);
 	
-	void POP(char* arg);
-	void POPF();
-	void PUSH(char* arg);
-	void PUSHF();
+	void POP(Operand* arg);
+	void POPA();
+	void PUSH(Operand* arg);
+	void PUSHA();
 	
 	void RCL(char* arg1, char* arg2);
 	void RCR(char* arg1, char* arg2);

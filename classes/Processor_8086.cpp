@@ -57,6 +57,8 @@ bool Processor_8086::execute(Instruction* instruction){
 			  //AAS();
 			else if(strcmp(instruction->getName(), "MOV") == 0)
 			  MOV(instruction->getArgument(0), instruction->getArgument(1));
+			else if(strcmp(instruction->getName(), "CMP") == 0)
+			  CMP(instruction->getArgument(0), instruction->getArgument(1));
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 			
@@ -68,6 +70,14 @@ bool Processor_8086::execute(Instruction* instruction){
 			
 			if(strcmp(instruction->getName(), "CALL") == 0)
 			  CALL(instruction->getArgument(0));
+			else if(strcmp(instruction->getName(), "JMP") == 0)
+			  JMP(instruction->getArgument(0));
+			else if(strcmp(instruction->getName(), "INC") == 0)
+			  INC(instruction->getArgument(0));
+			else if(strcmp(instruction->getName(), "POP") == 0)
+			  POP(instruction->getArgument(0));
+			else if(strcmp(instruction->getName(), "PUSH") == 0)
+			  PUSH(instruction->getArgument(0));
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 			
@@ -96,6 +106,10 @@ bool Processor_8086::execute(Instruction* instruction){
 			  CLI();
 			else if(strcmp(instruction->getName(), "RET") == 0)
 			  RET();
+			else if(strcmp(instruction->getName(), "POPA") == 0)
+			  POPA();
+			else if(strcmp(instruction->getName(), "PUSHA") == 0)
+			  PUSHA();
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 		}
@@ -165,12 +179,7 @@ void Processor_8086::AND(Operand* arg1, Operand* arg2){
 void Processor_8086::CALL(Operand* arg){
   stack->push(IP);
   
-  std::map<std::string,int>::iterator it;
-  for(it = labelMap->begin(); it != labelMap->end(); ++it)
-    if(it->first.compare(arg->getExpression()) == 0){
-      IP = it->second;
-      break;
-    }
+  JMP(arg);
     
   stack->pushJumpData();
 }
@@ -195,9 +204,9 @@ void Processor_8086::CLI(){
 		CLC();
 	else
 		STC();
-}
+}*/
 
-void Processor_8086::CMP(char* arg1, char* arg2){
+void Processor_8086::CMP(Operand* arg1, Operand* arg2){
 	int result = getValue(arg1) - getValue(arg2);
 		
 	if(result == 0)
@@ -206,7 +215,7 @@ void Processor_8086::CMP(char* arg1, char* arg2){
 			
 }
 
-void Processor_8086::DIV(char* arg){
+/*void Processor_8086::DIV(char* arg){
 	if(isByteRegistry(arg)){
 		int ax = getValue("AX");
 		setValue("AL", ax / getValue(arg));
@@ -216,35 +225,79 @@ void Processor_8086::DIV(char* arg){
 		setValue("AX", dx_ax / getValue(arg));
 		setValue("DX", dx_ax % getValue(arg));
 	} //else TODO
+}*/
+
+void Processor_8086::INC(Operand* arg){
+	setValue(arg, getValue(arg)+1);
 }
 
-	void INC(char* arg){
-		setValue(arg, getValue(arg)+1);
-	}
+void Processor_8086::JMP(Operand* arg){
+  std::map<std::string,int>::iterator it;
+  for(it = labelMap->begin(); it != labelMap->end(); ++it)
+    if(it->first.compare(arg->getExpression()) == 0){
+      IP = it->second;
+      break;
+    }
+}
 
-	void MOV(char* arg1, char* arg2){
-		setValue(arg1, getValue(arg2));
-	}
+void Processor_8086::MOV(Operand* arg1, Operand* arg2){
+  setValue(arg1, getValue(arg2));
+}
 
-	void STC(){
-		flags = flags | CARRY_FLAG;
-	}
-	void STD(){
-		flags = flags | DIRECTION_FLAG;
-	}
-	void STI(){
-		flags = flags | INTERRUPT_FLAG;
-	}
-*/
+void Processor_8086::POP(Operand* arg){
+  setValue(arg, stack->pop());
+}
 
-	void Processor_8086::MOV(Operand* arg1, Operand* arg2){
-	  setValue(arg1, getValue(arg2));
-	}
+void Processor_8086::POPA(){
+  DI = stack->pop();
+  SI = stack->pop();
+  BP = stack->pop();
+  stack->pop();
+  BL = stack->pop();
+  BH = stack->pop();
+  DL = stack->pop();
+  DH = stack->pop();
+  CL = stack->pop();
+  CH = stack->pop();
+  AL = stack->pop();
+  AH = stack->pop();
+}
+
+void Processor_8086::PUSH(Operand* arg){
+  stack->push(getValue(arg));
+}
+
+void Processor_8086::PUSHA(){
+  stack->push(AH);
+  stack->push(AL);
+  stack->push(CH); 
+  stack->push(CL); 
+  stack->push(DH);
+  stack->push(DL);
+  stack->push(BH);
+  stack->push(BL);
+  stack->push(SP);
+  stack->push(BP);
+  stack->push(SI); 
+  stack->push(DI);
+}
 	
-	void Processor_8086::RET(){
-	  stack->popJumpData();
-	  IP = stack->pop();
-	}
+void Processor_8086::STC(){
+	flags = flags | CARRY_FLAG;
+}
+
+void Processor_8086::STD(){
+	flags = flags | DIRECTION_FLAG;
+}
+
+void Processor_8086::STI(){
+	flags = flags | INTERRUPT_FLAG;
+}
+	
+void Processor_8086::RET(){
+	stack->popJumpData();
+	IP = stack->pop();
+}
 
 	int Processor_8086::getValue(Operand* arg){
 	  if(dynamic_cast<Registry*>(arg) != NULL){
