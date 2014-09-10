@@ -38,7 +38,6 @@ Instruction::Instruction(char* name, int address, int numberOfArgs, Operand** ar
 }
 
 Instruction::Instruction(const Instruction& instruction){
-  printf("begin");
   this->name = strdup(instruction.name);
   this->address = instruction.address;
   this->argsNo = instruction.argsNo;
@@ -46,7 +45,6 @@ Instruction::Instruction(const Instruction& instruction){
   int i;
   for(i = 0; i<argsNo; ++i)
     args[i] = instruction.args[i];
-  printf("end");
 }
 
 Instruction::~Instruction(){
