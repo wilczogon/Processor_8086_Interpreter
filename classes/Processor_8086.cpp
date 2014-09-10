@@ -90,6 +90,8 @@ bool Processor_8086::execute(Instruction* instruction){
 			  CLD();
 			else if(strcmp(instruction->getName(), "CLI") == 0)
 			  CLI();
+			else if(strcmp(instruction->getName(), "RET") == 0)
+			  RET();
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 		}
