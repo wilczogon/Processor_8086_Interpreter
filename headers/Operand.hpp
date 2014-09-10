@@ -7,7 +7,7 @@ public:
 	Operand(char* expression);
 	virtual ~Operand();
 
-private:
+protected:
 	char* expression;
 };
 

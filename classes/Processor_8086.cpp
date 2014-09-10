@@ -51,6 +51,8 @@ bool Processor_8086::execute(Instruction* instruction){
 			  AND(instruction->getArgument(0), instruction->getArgument(1));
 			//else if(strcmp(instruction->getName(), "AAS") == 0)
 			  //AAS();
+			else if(strcmp(instruction->getName(), "MOV") == 0)
+			  MOV(instruction->getArgument(0), instruction->getArgument(1));
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 			
@@ -199,6 +201,10 @@ void Processor_8086::DIV(char* arg){
 	}
 */
 
+	void Processor_8086::MOV(Operand* arg1, Operand* arg2){
+	  setValue(arg1, getValue(arg2));
+	}
+
 	int Processor_8086::getValue(Operand* arg){
 	  if(dynamic_cast<Registry*>(arg) != NULL){
 	    Registry* reg = dynamic_cast<Registry*>(arg);
@@ -206,7 +212,7 @@ void Processor_8086::DIV(char* arg){
 	    
 	  } else if(dynamic_cast<MemoryAddress*>(arg) != NULL){
 	    MemoryAddress* mem = dynamic_cast<MemoryAddress*>(arg); //TODO
-	    return 0;//getRegistryValue(reg->getExpression());
+	    return memory->get(mem->getValue());
 	    
 	  } else if(dynamic_cast<NumericValue*>(arg) != NULL){
 	    NumericValue* val = dynamic_cast<NumericValue*>(arg);
@@ -222,7 +228,7 @@ void Processor_8086::DIV(char* arg){
 	    
 	  } else if(dynamic_cast<MemoryAddress*>(arg) != NULL){
 	    MemoryAddress* mem = dynamic_cast<MemoryAddress*>(arg); //TODO
-	    //return 0;//getRegistryValue(reg->getExpression());
+	    memory->put(mem->getValue(), value);
 	    
 	  }
 	}
@@ -256,6 +262,14 @@ void Processor_8086::DIV(char* arg){
 			return CH;
 		else if(strcmp(arg, "DH") == 0)
 			return DH;
+		else if(strcmp(arg, "CS") == 0)
+			return CS;
+		else if(strcmp(arg, "DS") == 0)
+			return DS;
+		else if(strcmp(arg, "ES") == 0)
+			return ES;
+		else if(strcmp(arg, "SS") == 0)
+			return SS;
 			
 	}
 	
@@ -288,6 +302,14 @@ void Processor_8086::DIV(char* arg){
 			CH = value;
 		else if(strcmp(arg, "DH") == 0)
 			DH = value;
+		else if(strcmp(arg, "CS") == 0)
+			CS = value;
+		else if(strcmp(arg, "DS") == 0)
+			DS = value;
+		else if(strcmp(arg, "ES") == 0)
+			ES = value;
+		else if(strcmp(arg, "SS") == 0)
+			SS = value;
 	}
 	
 /*bool Processor_8086::isByteRegistry(char* arg){

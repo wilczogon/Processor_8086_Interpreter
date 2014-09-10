@@ -11,7 +11,7 @@ static inline char* extractArgument(char* lineptr, int argnr){
 	const char* temp = lineptr;
 	int len;
 	int ii, cc;
-	for(ii = 0; ii < argnr; ii++){
+	for(ii = 0; ii <= argnr; ii++){
 		while(isWhiteSpace(*(lineptr)))
 			lineptr++;
 		temp = lineptr;

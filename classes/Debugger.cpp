@@ -13,7 +13,7 @@ bool Debugger::step(){
 	return false;
       
       char* tmp = instruction->toCharArray();
-      printf("\n%s\n\n", tmp);
+      printf("\nNext step: %s\n\n", tmp);
       free(tmp);
       return processor->execute(instruction);
 }

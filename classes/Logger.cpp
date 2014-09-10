@@ -9,6 +9,7 @@
 #include "../headers/Message.hpp"
 
 void Logger::log(Message* message){
+	printf("%s\n", message->getText());
 	int fd = open(fileName, O_CREAT | O_APPEND | O_RDWR, 0777);
 	
 	if(message->getType() == NOTIFICATION)

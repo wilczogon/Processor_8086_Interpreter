@@ -84,7 +84,7 @@ public:
 	void LOOPNE(char* arg);
 	void LOOPNZ(char* arg);
 	void LOOPZ(char* arg);
-	void MOV(char* arg1, char* arg2);
+	void MOV(Operand* arg1, Operand* arg2);
 	void MOVSB();
 	void MOVSW();
 	void MUL(char* arg);

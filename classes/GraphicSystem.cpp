@@ -10,6 +10,10 @@ void GraphicSystem::paintStandardView(){
   printf("BH: %d\tBL: %d\n", processor->getRegistryValue("BH"), processor->getRegistryValue("BL"));
   printf("CH: %d\tCL: %d\n", processor->getRegistryValue("CH"), processor->getRegistryValue("CL"));
   printf("DH: %d\tDL: %d\n", processor->getRegistryValue("DH"), processor->getRegistryValue("DL"));
+  printf("CS: %d\n", processor->getRegistryValue("CS"));
+  printf("DS: %d\n", processor->getRegistryValue("DS"));
+  printf("ES: %d\n", processor->getRegistryValue("ES"));
+  printf("SS: %d\n", processor->getRegistryValue("SS"));
 }
   
 void GraphicSystem::paintMemoryView(){
