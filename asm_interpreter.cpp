@@ -10,7 +10,7 @@ int main(int argc, char** args){
 	if(argc == 2)
 		fileName = args[1];
 	else if(argc == 1){
-		printf("Correct call format: ./asm_interpreter <file name>");
+		printf("Correct call format: ./asm_interpreter <file name>\n\n");
 		return 1;
 	}else{
 		printf("\nIncorrect format.\n\nPlease use one of following:\n----------------------------\n\t./asm_interpreter\n\t./asm_interpreter <name of input file>\n\n");
