@@ -59,11 +59,6 @@ int Debugger::getAdressByLabel(string label){
   
   return -1;
   
-  //map<string,int>::iterator it = labelMap->find(label);
-  //if(it == labelMap->end())
-    //return -1;
-  //else return it->second;
-  
 }
 
 Instruction* Debugger::getInstruction(int address){

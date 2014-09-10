@@ -147,11 +147,6 @@ public:
 	int getRegistryValue(const char* arg);
 	void setIP(int);
 	
-private:
-	
-	const static int WORD_BOUNDARY = 1<<16;
-	const static int BYTE_BOUNDARY = 1<<8;
-	
 	const static int CARRY_FLAG 	= 1;
 	const static int PARITY_FLAG 	= 1<<2;
 	const static int AUX_CARRY_FLAG = 1<<4;
@@ -161,6 +156,11 @@ private:
 	const static int INTERRUPT_FLAG = 1<<9;
 	const static int DIRECTION_FLAG = 1<<10;
 	const static int OVERFLOW_FLAG 	= 1<<11;
+	
+private:
+	
+	const static int WORD_BOUNDARY = 1<<16;
+	const static int BYTE_BOUNDARY = 1<<8;
 	
 	// AX, BX, CX, DX
 	int AH, AL, BH, BL, CH, CL, DH, DL;

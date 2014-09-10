@@ -311,6 +311,16 @@ void Processor_8086::DIV(char* arg){
 			return ES;
 		else if(strcmp(arg, "SS") == 0)
 			return SS;
+		else if(strcmp(arg, "SI") == 0)
+			return SI;
+		else if(strcmp(arg, "DI") == 0)
+			return DI;
+		else if(strcmp(arg, "SP") == 0)
+			return SP;
+		else if(strcmp(arg, "BP") == 0)
+			return BP;
+		else if(strcmp(arg, "flags") == 0)
+			return flags;
 			
 	}
 	
