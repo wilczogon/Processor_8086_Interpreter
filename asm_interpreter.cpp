@@ -11,7 +11,7 @@ int main(int argc, char** args){
 		fileName = args[1];
 	else if(argc == 1){
 		printf("Correct call format: ./asm_interpreter <file name>");
-		exit 1;
+		return 1;
 	}else{
 		printf("\nIncorrect format.\n\nPlease use one of following:\n----------------------------\n\t./asm_interpreter\n\t./asm_interpreter <name of input file>\n\n");
 		exit(-1);
