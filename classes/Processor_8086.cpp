@@ -21,6 +21,28 @@ Processor_8086::Processor_8086(std::map<std::string,int>* labelMap, Memory* memo
 	this->logger = logger;
 	IP = offset;
 	this->logger->log(new Message((char*)"Processor_8086 started.", NOTIFICATION));
+	AH = 0;
+	AL = 0;
+	BH = 0;
+	BL = 0;
+	CH = 0;
+	CL = 0;
+	DH = 0;
+	DL = 0;
+	
+	// SI, DI, BP, SP - 16 bit
+	SI = 0;
+	DI = 0;
+	BP = 0;
+	SP = 0;
+	
+	// CS, DS, ES, SS - 16 bit
+	CS = 0;
+	DS = 0;
+	ES = 0;
+	SS = 0;
+	
+	flags = 0;
 }
 
 Processor_8086::~Processor_8086(){

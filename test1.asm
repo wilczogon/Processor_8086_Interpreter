@@ -10,6 +10,8 @@ call dodawanie
 
 call mnozenie
 
+jmp end
+
 end start
 
 dodawanie:
@@ -31,3 +33,5 @@ mul bl        ; ax = 0320h (800)
 popa
 
 ret
+
+end:
