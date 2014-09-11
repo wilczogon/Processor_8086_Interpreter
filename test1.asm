@@ -10,9 +10,9 @@ call dodawanie
 
 call mnozenie
 
-jmp end
+call flagsCheck
 
-end start
+jmp end
 
 dodawanie:
 
@@ -32,6 +32,20 @@ mov bl, 4
 mul bl        ; ax = 0320h (800)
 popa
 
+ret
+
+flagsCheck:
+pusha
+
+mov ah, 2
+mov al, 2
+cmp ah, al
+std
+sti
+cld
+
+
+popa
 ret
 
 end:

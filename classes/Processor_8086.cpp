@@ -100,6 +100,8 @@ bool Processor_8086::execute(Instruction* instruction){
 			  POP(instruction->getArgument(0));
 			else if(strcmp(instruction->getName(), "PUSH") == 0)
 			  PUSH(instruction->getArgument(0));
+			else if(strcmp(instruction->getName(), "MUL") == 0)
+			  MUL(instruction->getArgument(0));
 			else
 			  logger->log(new Message((char*)"Unknown instruction.", ERROR));
 			
@@ -126,6 +128,12 @@ bool Processor_8086::execute(Instruction* instruction){
 			  CLD();
 			else if(strcmp(instruction->getName(), "CLI") == 0)
 			  CLI();
+			else if(strcmp(instruction->getName(), "STC") == 0)
+			  STC();
+			else if(strcmp(instruction->getName(), "STD") == 0)
+			  STD();
+			else if(strcmp(instruction->getName(), "STI") == 0)
+			  STI();
 			else if(strcmp(instruction->getName(), "RET") == 0)
 			  RET();
 			else if(strcmp(instruction->getName(), "POPA") == 0)
@@ -232,7 +240,14 @@ void Processor_8086::CMP(Operand* arg1, Operand* arg2){
 	int result = getValue(arg1) - getValue(arg2);
 		
 	if(result == 0)
-		flags = flags | ZERO_FLAG;
+	  flags = flags | ZERO_FLAG;
+	else
+	  flags  = flags & ~ZERO_FLAG;
+	
+	if(result < 0)
+	  flags = flags | SIGN_FLAG;
+	else
+	  flags  = flags & ~SIGN_FLAG;
 	//else if(result > 0) TODO
 			
 }
@@ -264,6 +279,22 @@ void Processor_8086::JMP(Operand* arg){
 
 void Processor_8086::MOV(Operand* arg1, Operand* arg2){
   setValue(arg1, getValue(arg2));
+}
+
+void Processor_8086::MUL(Operand* arg){
+    if(isByteRegistry(arg->getExpression())){
+      int tmp = AL * getValue(arg);
+      AH = tmp/256;
+      AL = tmp%256;
+    } else{
+      int tmp = (AH*256+AL) * getValue(arg);
+      int DX = tmp/(256*256);
+      int AX = tmp%(256*256);
+      DH = DX/256;
+      DL = DX%256;
+      AH = AX/256;
+      AL = AX%256;
+    }
 }
 
 void Processor_8086::POP(Operand* arg){
@@ -438,7 +469,7 @@ void Processor_8086::RET(){
 			SS = value;
 	}
 	
-/*bool Processor_8086::isByteRegistry(char* arg){
+bool Processor_8086::isByteRegistry(char* arg){
 	if(strcmp(arg, "AL") == 0)
 		return true;
 	else if(strcmp(arg, "BL") == 0)
@@ -472,7 +503,7 @@ bool Processor_8086::isWordRegistry(char* arg){
 		return false;
 }
 
-bool isLabel(char* arg){
+/*bool isLabel(char* arg){
 	return false;
 }*/
 

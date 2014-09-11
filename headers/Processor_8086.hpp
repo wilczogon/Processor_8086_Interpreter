@@ -89,7 +89,7 @@ public:
 	void MOV(Operand* arg1, Operand* arg2);
 	void MOVSB();
 	void MOVSW();
-	void MUL(char* arg);
+	void MUL(Operand* arg);
 	void NEG(char* arg);
 	void NOP();
 	void NOT(char* arg);
@@ -192,10 +192,10 @@ private:
 	void setValue(Operand* arg, int value);
 	
 	void setRegistryValue(const char* arg, int value);
-	/*
+	
 	bool isByteRegistry(char* arg);
 	bool isWordRegistry(char* arg);
-	bool isValue(char* arg);
+	/*bool isValue(char* arg);
 	bool isMemoryAddress(char* arg);
 	bool isLabel(char* arg);
 	*/
