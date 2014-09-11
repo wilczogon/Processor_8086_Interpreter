@@ -30,8 +30,11 @@ clean:
 	cd $(ComponentsFolder)
 	rm -f $(Components:.x=.o)
 	rm -f $(FlexComponents:.x=.cpp)
+	rm -f *~
 	cd ..
-	rm asm_interpreter
-	rm asm_interpreter.o
-	rm test_asm_interpreter
-	rm test_asm_interpreter.o
+	rm -f logs
+	rm -f asm_interpreter
+	rm -f asm_interpreter.o
+	rm -f test_asm_interpreter
+	rm -f test_asm_interpreter.o
+	rm -f *~
