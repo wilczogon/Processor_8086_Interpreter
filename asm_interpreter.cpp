@@ -20,7 +20,7 @@ int main(int argc, char** args){
 
 	char* input = (char*)malloc(100*sizeof(char*));
 	
-	printf("\nWelcome into Asembler Interpreter.\n\nWe have delight to introduce you our totally impractical PROGRAM!!!\n\nSo, dear User, please enjoy our way of making art. (I suggest you to type 'help' first)\n\n");
+	printf("\nWelcome into Asembler Interpreter.\nIt can help you to check your asembler code.\n\n(I suggest you to type 'help' first)\n\n");
 
 	while(true){
 
