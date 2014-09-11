@@ -162,7 +162,7 @@ SREG			{DS}|{ES}|{SS}|{CS}
 REG			{AX}|{BX}|{CX}|{DX}|{SI}|{DI}|{AL}|{BL}|{CL}|{DL}|{AH}|{BH}|{CH}|{DH}
 memory			"["({BX}|{SI}|{DI}|{immediate})([ \t]*("+"|"-")[ \t]*({BX}|{SI}|{DI}|{immediate}))*"]"|label
 address			{memory}
-immediate		([[:digit:]]+|[[:digit:]A-Fa-f]+"h"|[01]+"b")([ \t]*"+"[ \t]*([[:digit:]]+|[[:digit:]A-Fa-f]+"h"|[01]+"b"))*
+immediate		[+-]?[ \t]*([[:digit:]]+|[[:digit:]A-Fa-f]+"h"|[01]+"b")([ \t]*"+"[ \t]*([[:digit:]]+|[[:digit:]A-Fa-f]+"h"|[01]+"b"))*
 value			\'[[:alnum:]]+\'
 
 AX			"AX"|"ax"
